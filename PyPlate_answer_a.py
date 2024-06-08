@@ -1,4 +1,3 @@
-#(a) [optional]
 # Import necessary libraries
 from pyplate import Substance, Container, Plate, Recipe
 import pandas as pd
@@ -14,7 +13,6 @@ ligands = ['XPhos', 'SPhos', 'dppf']
 solvents = ['toluene', 'glyme', 'TBME', 'dichloroethane']
 solvent_weight = {"toluene": 92.14, "glyme":90.12, "TBME": 88.15, "dichloroethane": 98.96}
 solvent_density = {"toluene": 0.866, "glyme":0.867, "TBME": 0.740, "dichloroethane": 1.25}
-
 
 triethylamine = Substance.liquid(name="triethylamine", mol_weight=101.19, density=0.726)
 
@@ -68,12 +66,8 @@ for reaction in range(1, num_reactions + 1):
                     total_volume_uL
                 ])
 
-                
-
 # Convert to DataFrame
 experiment_df = pd.DataFrame(experiment_conditions, columns=columns)
 
 # Save the experiment design to a file
 experiment_df.to_csv('experimental_design.csv', index=False)
-
-#(a) [optional] end
