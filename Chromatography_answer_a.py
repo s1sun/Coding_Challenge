@@ -23,6 +23,6 @@ def parse_pear_binary(binary_file_path, csv_file_path):
 
 # ---------- main ---------- #
 if __name__ == '__main__':
-    binary_file_path = 'C:\\Users\\Sean Sun\\Downloads\\merck_coding_challenge\\pear\\pear'
-    csv_file_path = 'C:\\Users\\Sean Sun\\Downloads\\merck_coding_challenge\\pear\\pear.csv'
+    binary_file_path = 'pear/pear'
+    csv_file_path = 'pear/pear.csv'
     parse_pear_binary(binary_file_path, csv_file_path)
