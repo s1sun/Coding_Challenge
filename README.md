@@ -8,7 +8,8 @@ My name is Sean Sun. Please check the answers below for the Merck_Coding_Challen
 I used the command "format-hex pear | more" from Wondows PowerShell and find 
 1. each value has 4 bytes
 2. the first 320 bytes
-3. the tail 480 bytes are same 
+3. the tail 480 bytes are same
+   
 (ii) determine how the data are stored in binary form
 
 Check the corresponding pear_original.csv, each line has one pair (time, intensity) with 2X4 bytes
