@@ -38,4 +38,5 @@ Reviewing the corresponding "scare_original.csv", it contains 12345 lines. The h
 (iii) write a Python program that converts the binary data into csv form (to parallel the provided csv)
 
 To see the python script, please refer to "Chromatography_answer_b.py" and "chromatography.py" files.
-### 5. Answer for the second challenge (c) [optional]: please refer to Chromatography_answer_c.py file
+### 5. Answer for the second challenge (c) sixtysix (hard – optional, for bonus points): time vs. mass vs. intensity data
+I am working on it
