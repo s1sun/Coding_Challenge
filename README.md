@@ -5,7 +5,7 @@ My name is Sean Sun. Please check the answers below for the Merck_Coding_Challen
 ### 3. Answer for the second challenge (a) pear challenge (easy): time vs. intensity data:
 (i) examine the raw data
 
-I used the command "format-hex pear | more" from Wondows PowerShell and find 
+I used the command "format-hex pear | more" from Wondows PowerShell and found 
 1. each value has 4 bytes
 2. the first 320 bytes
 3. the tail 480 bytes are same
