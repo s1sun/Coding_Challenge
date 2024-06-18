@@ -40,7 +40,7 @@ I used the command "format-hex scale | more" in Wondows PowerShell and found the
    * 12345 represents the data length
 
 The detailed information for the raw data listed in the table below:
-| Name                    | Data_offset | Byte order       | Format   | 
+| Name                    | offset      | Byte order       | Format   | 
 | ----------------------- | ----------- | ---------------- | -------- |
 | factor                  | 128         | (>)big-endian    | h(2)     |
 | start of wavelengths    | 256         | (>)big-endian    | h(2)     |
@@ -50,7 +50,8 @@ The detailed information for the raw data listed in the table below:
 | start of body           | 512         | (>)big-endian    | h(2)     |
 | mark in body data       |             | (>)big-endian    | cc(2)    |
 | time in body data       |             | (<)little-endian | f(4)     |
-| wavelength in body data |             | (>)big-endian    | i(4)    |
+| wavelength in body data |             | (>)big-endian    | i(4)     |
+
 (ii) determine how the data are stored in binary form
 
 Reviewing the corresponding "scare_original.csv", it contains 12345 lines. The head title lists wavelengths [190, 200, 210,...,400] each increasing by 10. This matches the observations from the head of binary data.
