@@ -7,16 +7,16 @@ My name is Sean Sun. Please check the answers below for the Merck_Coding_Challen
 
 I used the command "format-hex pear | more" from Wondows PowerShell and discovered that the binary data is divided into three sections: head, body and footer.
 1. Each value is 4 bytes
-2. The head consists of 320 bytes with the "H   " repeating throughout.
+2. The header consists of 320 bytes with the "H   " repeating throughout.
 3. The body contains 10000 pairs values, with each pair occupying 2 X 4 bytes.
 4. the footer consists of 480 bytes with the "H   " repeating throughout.
 
 The detailed information for the raw data listed in the table below:
-| Name     | Type     | Size     |
-| -------- | -------- | -------- |
-| head     | bytes    | 320      |
-| body     | bytes    | 80000    |
-| footer   | bytes    | 480      | 
+| Name     | Size     | Byte order       | Format   | 
+| -------- | -------- | ---------------- | -------- |
+| header   | 320      | (<)little-endian | i(4)     |
+| body     | 80000    | (<)little-endian | i(4)     |
+| footer   | 480      | (<)little-endian | i(4)     |
 
 (ii) determine how the data are stored in binary form
 
@@ -29,16 +29,27 @@ To see the python script, please refer to "Chromatography_answer_a.py" and "chro
 (i) examine the raw data
 
 I used the command "format-hex scale | more" in Wondows PowerShell and found the following
-1. The binary data is divided into two sections: head and body.
-2. The head section contains 512 bytes.
+1. The binary data is divided into two sections: header and body.
+2. The header section contains 512 bytes.
 3. The body section contains 1160430 bytes, beginning with "HH". The "HH" bytes repeat 12345 times.
-4. Parsing the head revealed 5 values: 20, 190, 400, 10, and 12345.
+4. Parsing the header revealed 5 values: 20, 190, 400, 10, and 12345.
    * 20 represents the factor;
    * 190 represents the start of wavelengths;
    * 400 represents the end of wavelengths;
    * 10 represents the increment for next wavelength;
    * 12345 represents the data length
-   
+The detailed information for the raw data listed in the table below:
+| Name                    | Data_offset | Byte order       | Format   | 
+| ----------------------- | ----------- | ---------------- | -------- |
+| factor                  | 128         | (>)big-endian    | h(2)     |
+| start of wavelengths    | 256         | (>)big-endian    | h(2)     |
+| end of wavelengths      | 258         | (>)big-endian    | h(2)     |
+| increment               | 260         | (>)big-endian    | h(2)     |
+| data length             | 384         | (>)big-endian    | h(2)     |
+| start of body           | 512         | (>)big-endian    | h(2)     |
+| mark in body data       |             | (>)big-endian    | cc(2)    |
+| time in body data       |             | (<)little-endian | f(4)     |
+| wavelength in body data |             | (>)big-endian    | i(4)    |
 (ii) determine how the data are stored in binary form
 
 Reviewing the corresponding "scare_original.csv", it contains 12345 lines. The head title lists wavelengths [190, 200, 210,...,400] each increasing by 10. This matches the observations from the head of binary data.
