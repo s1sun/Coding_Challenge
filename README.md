@@ -33,11 +33,12 @@ I used the command "format-hex scale | more" in Wondows PowerShell and found the
 2. The header section contains 512 bytes.
 3. The body section contains 1160430 bytes, beginning with "HH". The "HH" bytes repeat 12345 times.
 4. Parsing the header revealed 5 values: 20, 190, 400, 10, and 12345.
-   * 20 represents the factor;
-   * 190 represents the start of wavelengths;
-   * 400 represents the end of wavelengths;
-   * 10 represents the increment for next wavelength;
-   * 12345 represents the data length
+   * 20 represents the factor.
+   * 190 represents the start of wavelengths.
+   * 400 represents the end of wavelengths.
+   * 10 represents the increment for next wavelength.
+   * 12345 represents the data length.
+5. In body section, there are 12345 segments, each beginning with the bytes b'HH' and containing 94 bytes.
 
 The detailed information for the raw data listed in the table below:
 | Name                    | offset      | Byte order       | Format   | 
@@ -54,7 +55,7 @@ The detailed information for the raw data listed in the table below:
 
 (ii) determine how the data are stored in binary form
 
-Reviewing the corresponding "scare_original.csv", it contains 12345 lines. The head title lists wavelengths [190, 200, 210,...,400] each increasing by 10. This matches the observations from the head of binary data.
+Reviewing the corresponding "scare_original.csv", it contains 12345 lines. The header title lists wavelengths [190, 200, 210,...,400] each increasing by 10. This matches the observations from the header of binary data.
 
 (iii) write a Python program that converts the binary data into csv form (to parallel the provided csv)
 
