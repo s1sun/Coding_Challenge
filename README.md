@@ -5,11 +5,19 @@ My name is Sean Sun. Please check the answers below for the Merck_Coding_Challen
 ### 3. Answer for the second challenge (a) pear challenge (easy): time vs. intensity data:
 (i) examine the raw data
 
-I used the command "format-hex pear | more" from Wondows PowerShell and discovered
-1. each value is 4 bytes
-2. the head consists of 320 bytes
-3. the footer consists 480 bytes
-   
+I used the command "format-hex pear | more" from Wondows PowerShell and discovered that the binary data is divided into three sections: head, body and footer.
+1. Each value is 4 bytes
+2. The head consists of 320 bytes with the "H   " repeating throughout.
+3. The body contains 10000 pairs values, with each pair occupying 2 X 4 bytes.
+4. the footer consists of 480 bytes with the "H   " repeating throughout.
+
+The detailed information for the raw data listed in the table below:
+| Name     | Type     | Size     |
+| -------- | -------- | -------- |
+| Head     | Bytes    | 320      |
+| Body     | Bytes    | 80000    |
+| footer   | Bytes    | 480      | 
+
 (ii) determine how the data are stored in binary form
 
 Up reviewing the "pear_original.csv" file, each line contains a pair of values (time, intensity), each requiring 4 bytes. The header is 320 bytes, and the footer is 480 bytes.
