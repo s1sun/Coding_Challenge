@@ -14,13 +14,13 @@ I used the command "format-hex pear | more" from Wondows PowerShell and discover
 The detailed information for the raw data listed in the table below:
 | Name     | Type     | Size     |
 | -------- | -------- | -------- |
-| Head     | Bytes    | 320      |
-| Body     | Bytes    | 80000    |
-| footer   | Bytes    | 480      | 
+| head     | bytes    | 320      |
+| body     | bytes    | 80000    |
+| footer   | bytes    | 480      | 
 
 (ii) determine how the data are stored in binary form
 
-Up reviewing the "pear_original.csv" file, each line contains a pair of values (time, intensity), each requiring 4 bytes. The header is 320 bytes, and the footer is 480 bytes.
+Up reviewing the "pear_original.csv" file, each line contains a pair of values (time, intensity), each value requiring 4 bytes. The header is 320 bytes, and the footer is 480 bytes.
 
 (iii) write a Python program that converts the binary data into csv form (to parallel the provided csv)
 
