@@ -38,6 +38,7 @@ I used the command "format-hex scale | more" in Wondows PowerShell and found the
    * 400 represents the end of wavelengths;
    * 10 represents the increment for next wavelength;
    * 12345 represents the data length
+
 The detailed information for the raw data listed in the table below:
 | Name                    | Data_offset | Byte order       | Format   | 
 | ----------------------- | ----------- | ---------------- | -------- |
