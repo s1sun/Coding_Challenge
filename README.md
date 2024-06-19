@@ -61,4 +61,6 @@ Reviewing the corresponding "scare_original.csv", it contains 12345 lines. The h
 
 To see the python script, please refer to "Chromatography_answer_b.py" and "chromatography.py" files.
 ### 5. Answer for the second challenge (c) sixtysix (hard – optional, for bonus points): time vs. mass vs. intensity data
-I am working on it
+(i) examine the raw data
+
+The binary file "sixtysix.A" contains 54,320 bytes, which is ten times the number of lines in the CSV file "sixtysix_original.csv". The binary file is divided into 5,432 segments. Each segment contains 10 bytes with 3 values: the first and second values occupy 2 x 4 bytes each, and the third value occupies 2 bytes. The second value represents time and can be calculated by dividing it by 60,000 and rounding the result.
