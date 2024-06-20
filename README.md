@@ -63,4 +63,27 @@ To see the python script, please refer to "Chromatography_answer_b.py" and "chro
 ### 5. Answer for the second challenge (c) sixtysix (hard – optional, for bonus points): time vs. mass vs. intensity data
 (i) examine the raw data
 
-The binary file "sixtysix.A" contains 54,320 bytes, which is ten times the number of lines in the CSV file "sixtysix_original.csv". The binary file is divided into 5,432 segments. Each segment contains 10 bytes with 3 values: the first and second values occupy 2 x 4 bytes each, and the third value occupies 2 bytes. The second value represents time and can be calculated by dividing it by 60,000 and rounding the result.
+The binary file "sixtysix.A" contains 54,320 bytes, which is ten times the number of lines in the CSV file "sixtysix_original.csv". The binary file is divided into 5,432 segments, each 10 bytes long containing 3 values: the first and second values occupy 2 x 4 bytes each, and the third value occupies 2 bytes. The second value represents time and can be calculated by dividing it by 60,000 and rounding the result. Third value represents the number of non-zero values in the row defined by the second time value.
+
+The binary file "sixtysix.B" contains 352,236 bytes. Each segment is 6 bytes long, resulting in a total of 58,706 segments. Referencing "sixtysix_original.csv," each segment in "sixtysix.B" consists of a pair of values: <mass (2 bytes), intensity (4 bytes)>.
+
+The detailed information for the raw data listed in the table below:
+| Name                        | Bytes       | Byte order        | Format   | 
+| --------------------------- | ----------- | ----------------- | -------- |
+| A file(5432 segments)       | 54320       |                   |          |
+|   in each segment           | 10          |                   |          |
+|     f_value                 | 4           | (>)big-endian     | I(4)     |
+|     s_value (Time)          | 4           | (>)big-endian     | I(4)     |
+|     t_value (No mass types) | 2           | (>)big-endian     | H(2)     |
+| B file(58706 segment)       | 352236      |                   |          |
+|   in each segment           | 6           |                   |          |
+|     f_value (mass type)     | 2           | (<))little-endian | H(2)     |
+|     s_value (intensity)     | 4           | (<))little-endian | I(4)     |
+
+(ii) determine how the data are stored in binary form
+
+Reviewing the corresponding "sixtysix_original.csv," it contains 5,432 lines. The "Time (min)" information is derived from the A file, and the number of lines in csv file matches the number of segments in the binary A file. The "Intensity" information is sourced from the B file.
+
+(iii) write a Python program that converts the binary data into csv form (to parallel the provided csv)
+
+To see the python script, please refer to "Chromatography_answer_C.py" and "chromatography.py" files.
