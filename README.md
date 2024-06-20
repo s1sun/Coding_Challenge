@@ -63,7 +63,7 @@ To see the python script, please refer to "Chromatography_answer_b.py" and "chro
 ### 5. Answer for the second challenge (c) sixtysix (hard – optional, for bonus points): time vs. mass vs. intensity data
 (i) examine the raw data
 
-The binary file "sixtysix.A" contains 54,320 bytes, which is ten times the number of lines in the CSV file "sixtysix_original.csv". The binary file is divided into 5,432 segments, each 10 bytes long containing 3 values: the first and second values occupy 2 x 4 bytes each, and the third value occupies 2 bytes. The second value represents time and can be calculated by dividing it by 60,000 and rounding the result. Third value represents the number of non-zero values in the row defined by the second time value.
+The binary file "sixtysix.A" contains 54,320 bytes, which is ten times the number of lines in the CSV file "sixtysix_original.csv". It is divided into 5,432 segments, each 10 bytes long, containing 3 values. The first and second values occupy 4 bytes each, and the third value occupies 2 bytes. The first value indicates the number of bytes preceding the row. The second value represents time and can be calculated by dividing it by 60,001 and rounding the result. Third value represents the number of non-zero values in the current row defined by the second time value.
 
 The binary file "sixtysix.B" contains 352,236 bytes. Each segment is 6 bytes long, resulting in a total of 58,706 segments. Referencing "sixtysix_original.csv," each segment in "sixtysix.B" consists of a pair of values: <mass (2 bytes), intensity (4 bytes)>.
 
