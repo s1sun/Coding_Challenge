@@ -67,7 +67,7 @@ The binary file "sixtysix.A" contains 54,320 bytes, which is ten times the numbe
 
 The binary file "sixtysix.B" contains 352,236 bytes. Each segment is 6 bytes long, resulting in a total of 58,706 segments. Referencing "sixtysix_original.csv," each segment in "sixtysix.B" consists of a pair of values: <mass (2 bytes), intensity (4 bytes)>.
 
-The detailed information for the raw data listed in the table below:
+The detailed information for the A binary data listed in the table below:
 | Name                             | Bytes       | Byte order        | Format   | 
 | -------------------------------- | ----------- | ----------------- | -------- |
 | A file(5432 segments)            | 54320       |                   |          |
@@ -75,10 +75,15 @@ The detailed information for the raw data listed in the table below:
 |      1.  f_value                 | 4           | (>)big-endian     | I(4)     |
 |      2.  s_value (Time)          | 4           | (>)big-endian     | I(4)     |
 |      3.  t_value (No mass types) | 2           | (>)big-endian     | H(2)     |
+
+The detailed information for the B binary data listed in the table below:
+| Name                             | Bytes       | Byte order        | Format   | 
+| -------------------------------- | ----------- | ----------------- | -------- |
 | B file(58706 segment)            | 352236      |                   |          |
 | Each segment in B file           | 6           |                   |          |
 |      1.  f_value (mass type)     | 2           | (<))little-endian | H(2)     |
 |      2.  s_value (intensity)     | 4           | (<))little-endian | I(4)     |
+
 
 (ii) determine how the data are stored in binary form
 
