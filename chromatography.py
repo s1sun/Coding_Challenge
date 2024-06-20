@@ -120,7 +120,7 @@ def parse_sixtysix_binary(binary_file_A, binary_file_B, csv_file_path):
     for i in range(0, len(binary_data_A), 10):
         segs = struct.unpack_from('>IIH', binary_data_A, i)
         decoded_valuesA.append(segs)
-        time = round(segs[1]/60000, 4)
+        time = round(segs[1]/60001, 4)
         # keep 4 decimal
         pre, decimals = str(time).split('.')
         while len(decimals)<4:
