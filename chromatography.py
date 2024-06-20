@@ -1,4 +1,6 @@
 import struct
+import pandas as pd
+import numpy as np
 
 def canconcate_items(row, delim):
     mystr = ""
@@ -98,3 +100,52 @@ def parse_scale_binary(binary_file_path, csv_file_path):
     # Write the decoded data to a CSV file
     title = ["Time (min)"] + wavelengths
     write_to_csv_WOCR(csv_file_path, title, decoded_valus)
+
+def parse_sixtysix_binary(binary_file_A, binary_file_B, csv_file_path):
+    # load binary data
+    binary_data_A = b''
+    with open(binary_file_A, 'rb') as fileA:
+        binary_data_A = fileA.read()
+    binary_data_B = b''
+    with open(binary_file_B, 'rb') as fileB:
+        binary_data_B = fileB.read()
+    
+    massset = set()
+    decoded_valuesA = []
+    decoded_valuesB = []
+    times = []
+    
+    # parse sixtysix format: A file has 5,432 segments. Each contains 10 bytes with 3 values: 
+    #    the first and second values occupy 2 x 4 bytes each, and the third value occupies 2 bytes
+    for i in range(0, len(binary_data_A), 10):
+        segs = struct.unpack_from('>IIH', binary_data_A, i)
+        decoded_valuesA.append(segs)
+        time = round(segs[1]/60000, 4)
+        # keep 4 decimal
+        pre, decimals = str(time).split('.')
+        while len(decimals)<4:
+            decimals += '0'
+        str_time = pre + "." + decimals
+        times.append(str_time)
+
+    for i in range(0, len(binary_data_B), 6):
+        pair = struct.unpack_from('<HI', binary_data_B, i)
+        decoded_valuesB.append(pair)
+        if pair[0] not in massset:
+            massset.add(pair[0])
+    df = pd.DataFrame(0, index=times, columns=sorted(massset))
+
+    # fill in time, mass, intensity into cell of dataframe
+    count = 0
+    for i in range(len(times)):
+        for j in range(decoded_valuesA[i][2]):
+            pair = decoded_valuesB[count]
+            df.loc[times[i], pair[0]] =  pair[1]
+            count += 1
+    
+    df = df.rename_axis('Time (min)').reset_index()       
+    decoded_values = df.values.tolist()
+    
+    # write list into files
+    title = df.columns
+    write_to_csv_WOCR(csv_file_path, title, decoded_values)
