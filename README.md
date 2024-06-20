@@ -8,15 +8,18 @@ My name is Sean Sun. Please check the answers below for the Merck_Coding_Challen
 I used the command "format-hex pear | more" from Wondows PowerShell and discovered that the binary data is divided into three sections: head, body and footer.
 1. Each value is 4 bytes
 2. The header consists of 320 bytes with the "H   " repeating throughout.
-3. The body contains 10000 pairs values, with each pair occupying 2 X 4 bytes.
+3. The body contains 10000 pairs values, with each pair occupying 4 bytes.
 4. the footer consists of 480 bytes with the "H   " repeating throughout.
 
 The detailed information for the raw data listed in the table below:
-| Name     | Size     | Byte order       | Format   | 
-| -------- | -------- | ---------------- | -------- |
-| header   | 320      | (<)little-endian | i(4)     |
-| body     | 80000    | (<)little-endian | i(4)     |
-| footer   | 480      | (<)little-endian | i(4)     |
+| Name                           | Bytes    | Byte order       | Format   | 
+| ------------------------------ | -------- | ---------------- | -------- |
+| header                         | 320      |                  |          |
+| body (10000 segments)          | 80000    |                  |          |
+| each segment (time, Intensity) | 8        |                  |          |
+| time                           | 4        | (<)little-endian | I(4)     |
+| intensity                      | 4        | (<)little-endian | I(4)     |
+| footer                         | 480      |                  |          |
 
 (ii) determine how the data are stored in binary form
 
