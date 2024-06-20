@@ -91,4 +91,4 @@ Reviewing the corresponding "sixtysix_original.csv," it contains 5,432 lines. Th
 
 (iii) write a Python program that converts the binary data into csv form (to parallel the provided csv)
 
-To see the python script, please refer to "Chromatography_answer_C.py" and "chromatography.py" files.
+To see the python script, please refer to "Chromatography_answer_c.py" and "chromatography.py" files.
