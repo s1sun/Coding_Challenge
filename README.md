@@ -68,17 +68,17 @@ The binary file "sixtysix.A" contains 54,320 bytes, which is ten times the numbe
 The binary file "sixtysix.B" contains 352,236 bytes. Each segment is 6 bytes long, resulting in a total of 58,706 segments. Referencing "sixtysix_original.csv," each segment in "sixtysix.B" consists of a pair of values: <mass (2 bytes), intensity (4 bytes)>.
 
 The detailed information for the raw data listed in the table below:
-| Name                        | Bytes       | Byte order        | Format   | 
-| --------------------------- | ----------- | ----------------- | -------- |
-| A file(5432 segments)       | 54320       |                   |          |
-|   in each segment           | 10          |                   |          |
-|     f_value                 | 4           | (>)big-endian     | I(4)     |
-|     s_value (Time)          | 4           | (>)big-endian     | I(4)     |
-|     t_value (No mass types) | 2           | (>)big-endian     | H(2)     |
-| B file(58706 segment)       | 352236      |                   |          |
-|   in each segment           | 6           |                   |          |
-|     f_value (mass type)     | 2           | (<))little-endian | H(2)     |
-|     s_value (intensity)     | 4           | (<))little-endian | I(4)     |
+| Name                             | Bytes       | Byte order        | Format   | 
+| -------------------------------- | ----------- | ----------------- | -------- |
+| A file(5432 segments)            | 54320       |                   |          |
+|     in each segment              | 10          |                   |          |
+|          f_value                 | 4           | (>)big-endian     | I(4)     |
+|          s_value (Time)          | 4           | (>)big-endian     | I(4)     |
+|          t_value (No mass types) | 2           | (>)big-endian     | H(2)     |
+| B file(58706 segment)            | 352236      |                   |          |
+|     in each segment              | 6           |                   |          |
+|          f_value (mass type)     | 2           | (<))little-endian | H(2)     |
+|          s_value (intensity)     | 4           | (<))little-endian | I(4)     |
 
 (ii) determine how the data are stored in binary form
 
