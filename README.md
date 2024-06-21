@@ -75,17 +75,17 @@ The detailed information for the A binary data listed in the table below:
 | -------------------------------- | ----------- | ----------------- | -------- |
 | A file(5432 segments)            | 54320       |                   |          |
 | Each segment in A file           | 10          |                   |          |
-|      1.  f_value                 | 4           | (>)big-endian     | I(4)     |
-|      2.  s_value (Time)          | 4           | (>)big-endian     | I(4)     |
-|      3.  t_value (No mass types) | 2           | (>)big-endian     | H(2)     |
+|    1.  f_value (bytes preceding  | 4           | (>)big-endian     | I(4)     |
+|    2.  s_value (Time)            | 4           | (>)big-endian     | I(4)     |
+|    3.  t_value (No mass types)   | 2           | (>)big-endian     | H(2)     |
 
 The detailed information for the B binary data listed in the table below:
 | Name                             | Bytes       | Byte order        | Format   | 
 | -------------------------------- | ----------- | ----------------- | -------- |
 | B file(58706 segment)            | 352236      |                   |          |
 | Each segment in B file           | 6           |                   |          |
-|      1.  f_value (mass type)     | 2           | (<))little-endian | H(2)     |
-|      2.  s_value (intensity)     | 4           | (<))little-endian | I(4)     |
+|    1.  f_value (mass type)       | 2           | (<))little-endian | H(2)     |
+|    2.  s_value (intensity)       | 4           | (<))little-endian | I(4)     |
 
 
 (ii) determine how the data are stored in binary form
