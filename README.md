@@ -1,5 +1,5 @@
 ## Merck_Coding_Challenge
-My name is Sean Sun. Please check the answers below for the Merck_Coding_Challenge.
+My name is Shaojun Sun. My resume has been loaded as the resume_software.doc for reference. For the Merck_Coding_Challenge, please check my answers below:
 ### 1. Answer for the first challenge (a) [optional]: please refer to PyPlate_answer_a.ipynb file
 ### 2. Answer for the first challenge (b) : please refer to PyPlate_answer_b.ipynb file
 ### 3. Answer for the second challenge (a) pear challenge (easy): time vs. intensity data:
