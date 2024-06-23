@@ -20,7 +20,7 @@ The pyplate software package is a Python tool designed to facilitate the design 
 For detailed information about how to screen **temperatures, solvents, ligands, and Ai_mw vs Bi_mw**, please refer to the "PyPlate_answer_a.ipynb" file.
 
 #### (b): Explaining modification to PyPlate
->The goal is to explain how to modify PyPlate to incorporate a feature like **tags**.
+>The goal is to explain how to modify PyPlate to incorporate a feature like **tags** containing customer-additional rewuirements.
 
 **Solution for Requirement (b)**
 
