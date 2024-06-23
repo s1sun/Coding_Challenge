@@ -20,11 +20,11 @@ The pyplate software package is a Python tool designed to facilitate the design 
 For detailed information about how to screen **temperatures, solvents, ligands, and Ai_mw vs Bi_mw**, please refer to the "PyPlate_answer_a.ipynb" file.
 
 *(b): Explaining modification to PyPlate*
-> The goal is to explain how to modify PyPlate to incorporate a feature like **tags**.
+>The goal is to explain how to modify PyPlate to incorporate a feature like **tags**.
 
 #### Solution for Requirement (b)
 
-To accommodate additional information based on customer-specific requirements, we introduce the concept of tags. Tags will be a list containing customer-required additional information, such as Ai_mw, Bi_mw, etc.
+To accommodate additional information based on customer-specific requirements, I introduce the concept of tags. Tags will be a list containing customer-required additional information, such as Ai_mw, Bi_mw, etc.
 
 For detailed information about how to add **tags** into class **Substance**, please refer to the "PyPlate_answer_b.ipynb" file.
 
