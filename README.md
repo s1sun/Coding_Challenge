@@ -32,6 +32,7 @@ For detailed information about how to add **tags** into class **Substance**, ple
 Belows are three folders with artificially generated and encoded chromatography data that need to be parsed:
 
 *(a) pear challenge (easy): time vs. intensity data*
+#### Solution for Requirement (a)
 (i) examine the raw data
 
 I used the command "format-hex pear | more" from Wondows PowerShell and discovered that the binary data is divided into three sections: head, body and footer.
@@ -57,7 +58,9 @@ Up reviewing the "pear_original.csv" file, each line contains a pair of values (
 (iii) write a Python program that converts the binary data into csv form (to parallel the provided csv)
 
 To see the python script, please refer to "Chromatography_answer_a.py" and "chromatography.py" files.
-### 4. Answer for the second challenge (b) scale challenge (intermediate): time vs. wavelength vs. absorbance data
+
+*(b) scale challenge (intermediate): time vs. wavelength vs. absorbance data*
+#### Solution for Requirement (b)
 (i) examine the raw data
 
 I used the command "format-hex scale | more" in Wondows PowerShell and found the following
@@ -92,7 +95,9 @@ Reviewing the corresponding "scare_original.csv", it contains 12345 lines. The h
 (iii) write a Python program that converts the binary data into csv form (to parallel the provided csv)
 
 To see the python script, please refer to "Chromatography_answer_b.py" and "chromatography.py" files.
-### 5. Answer for the second challenge (c) sixtysix (hard – optional, for bonus points): time vs. mass vs. intensity data
+
+*(c) sixtysix (hard – optional, for bonus points): time vs. mass vs. intensity data*
+#### Solution for Requirement (c)
 (i) examine the raw data
 
 The binary file "sixtysix.A" contains 54,320 bytes, which is ten times the number of lines in the CSV file "sixtysix_original.csv". It is divided into 5,432 segments, each 10 bytes long, containing 3 values. The first and second values occupy 4 bytes each, and the third value occupies 2 bytes. The first value indicates the number of bytes preceding the row. The second value represents time and can be calculated by dividing it by 60,001 and rounding the result. Third value represents the number of non-zero values in the current row defined by the second time value.
