@@ -29,18 +29,18 @@ To accommodate additional information based on customer-specific requirements, I
 For detailed information about how to add **tags** into class **Substance**, please refer to the "PyPlate_answer_b.ipynb" file.
 
 ### 2. Parsing Chromatography Instrument Date
-This document outlines the steps to parse three folders containing artificially generated and encoded chromatography data. Each folder represents a different challenge.
+This document outlines the steps to parse three folders containing artificially generated and encoded chromatography data. Each folder represents a different challenge. The focus here is on the "Pear Challenge": time vs. intensity data, the "Scale Challenge": time vs. wavelength vs. absorbance data, and the "Sixtysix Challenge": time vs. mass vs. intensity data.
 
 #### (a) Pear Challenge (easy): time vs. intensity data
 **Solution for Requirement (a)**
 
-(i) Examine the Raw Data
+**(i) Examine the Raw Data**
 
-To begin, I used the command `format-hex pear | more` from Windows PowerShell to inspect the binary data. I found some parton listed below 
+To begin, I used the command `format-hex pear | more` from Windows PowerShell to inspect the binary data. I discovered the following: 
 1. The binary data is divided into three sections: header, body and footer.
 2. Each value occupies 4 bytes
 3. The header consists of 320 bytes with the "H   " repeating throughout.
-4. The body contains 10000 pairs of values, with each pair occupying 2 X 4 bytes.
+4. The body contains 10,000 pairs of values, with each pair occupying 2 X 4 bytes.
 5. The footer consists of 480 bytes with the "H   " repeating throughout.
 
 The detailed information for the raw data listed in the table below:
@@ -53,13 +53,13 @@ The detailed information for the raw data listed in the table below:
 |       intensity                | 4        | (<)little-endian | I(4)     |
 | footer                         | 480      |                  |          |
 
-(ii) Determine How the Data Are Stored in Binary Form
+**(ii) Determine How the Data Are Stored in Binary Form**
 
 Up reviewing the "pear_original.csv" file, I observed that each line contains a pair of values (time, intensity), with each value requiring 4 bytes. The header occupies 320 bytes with the "H   " repeating throughou, and the footer is 480 bytes with the "H   " repeating throughou.
 
-(iii) Write a Python program to Convert the Binary Data into csv Form (to parallel the provided csv)
+**(iii) Write a Python program to Convert the Binary Data into csv Form (to parallel the provided csv)**
 
-To convert the binary data into a CSV format similar to "pear_original.csv", I wrote a Python script. The script reads the binary file, processes the header, body, and footer sections, and extracts the time and intensity values.
+To convert the binary data into a CSV format similar to **"pear_original.csv"**, I wrote a Python script. The script reads the binary file, processes the header, body, and footer sections, and extracts the time and intensity values.
 
 Here is the brief overview of the Python script:
    1. **Read the Binary File**: Open the binary file in read mpde.
@@ -67,39 +67,39 @@ Here is the brief overview of the Python script:
    3. **Extract Time and Intensity Values**: Read the next 80,000 bytes (body) as pairs of 4-byte values, interpreting them as little-endian integers.
    4. **Parse the Footer**: Skip the last 480 bytes (footer).
    5. **Save to CSV**: Write the extracted time and intensity values to a CSV file.
-   6. **Compare the CSV to "pear_original.csv"**: Compare the encorded CSV with the "pear_original.csv" and output the difference.
+   6. **Compare the CSV to "pear_original.csv"**: Compare the generated **pear.csv** with the "pear_original.csv" and output the differences.
 
 For the complete Python Script, please refer to **"Chromatography_answer_a.py"** and **"chromatography.py"** files.
 
 #### (b) scale challenge (intermediate): time vs. wavelength vs. absorbance data
 **Solution for Requirement (b)**
 
-(i) examine the raw data
+**(i) Examine the Raw Data**
 
-I used the command "format-hex scale | more" in Wondows PowerShell and found the following
+I used the command "format-hex scale | more" in Windows PowerShell and found the following:
 1. The binary data is divided into two sections: header and body.
 2. The header section contains 512 bytes.
-3. The body section contains 1160430 bytes, beginning with "HH". The "HH" bytes repeat 12345 times.
-4. Parsing the header revealed 5 values: 20, 190, 400, 10, and 12345.
+3. The body section contains 1160430 bytes, beginning with "HH". The "HH" bytes repeat 12,345 times.
+4. Parsing the header revealed 5 values: 20, 190, 400, 10, and 12,345.
    * 20 represents the factor.
-   * 190 represents the start of wavelengths.
-   * 400 represents the end of wavelengths.
-   * 10 represents the increment for next wavelength.
-   * 12345 represents the data length.
-5. In body section, there are 12345 segments, each beginning with the bytes b'HH' and containing 94 bytes.
+   * 190 represents the start value of wavelength in list.
+   * 400 represents the end value of wavelength in list.
+   * 10 represents the increment value in next wavelength compared to the previous one in the list.
+   * 12,345 represents the row number of body data.
+5. In the body section, there are 12,345 segments, each beginning with the bytes b'HH' and containing 94 bytes.
 
 The detailed information for the raw data listed in the table below:
-| Name                    | offset      | Byte order       | Format   | 
-| ----------------------- | ----------- | ---------------- | -------- |
-| factor                  | 128         | (>)big-endian    | h(2)     |
-| start of wavelengths    | 256         | (>)big-endian    | h(2)     |
-| end of wavelengths      | 258         | (>)big-endian    | h(2)     |
-| increment               | 260         | (>)big-endian    | h(2)     |
-| data length             | 384         | (>)big-endian    | h(2)     |
-| start of body           | 512         | (>)big-endian    | h(2)     |
-| mark in body data       |             | (>)big-endian    | cc(2)    |
-| time in body data       |             | (<)little-endian | f(4)     |
-| wavelength in body data |             | (>)big-endian    | i(4)     |
+| Name                              | offset      | Byte order       | Format   | 
+| --------------------------------- | ----------- | ---------------- | -------- |
+| factor                            | 128         | (>)big-endian    | h(2)     |
+| start value of wavelength in list | 256         | (>)big-endian    | h(2)     |
+| end value of wavelength in list   | 258         | (>)big-endian    | h(2)     |
+| increment                         | 260         | (>)big-endian    | h(2)     |
+| row number of body data           | 384         | (>)big-endian    | h(2)     |
+| start of body with 12345 rows     | 512         | (>)big-endian    | h(2)     |
+|    each row mark in body data     |             | (>)big-endian    | cc(2)    |
+|    time in body data              |             | (<)little-endian | f(4)     |
+|    wavelength in body data        |             | (>)big-endian    | i(4)     |
 
 (ii) determine how the data are stored in binary form
 
