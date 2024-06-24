@@ -140,13 +140,14 @@ def parse_sixtysix_binary(binary_file_A, binary_file_B, csv_file_path):
 
     # parse sixtysix format: B file has 58,706 segments. Each contains 6 bytes with 2 values: 
     #    the first value occupy 2 bytes, and the second value occupies 4 bytes
+    #    collect mass into massset
     for i in range(0, len(binary_data_B), 6):
         pair = struct.unpack_from('<HI', binary_data_B, i)
         decoded_valuesB.append(pair)
         if pair[0] not in massset:
             massset.add(pair[0])
     
-    # create a zero datadframe with index = time, columns = number of mass values
+    # create a zero values datadframe with index = time, columns = mass values
     df = pd.DataFrame(0, index=times, columns=sorted(massset))
 
     # fill in time, mass, intensity into cell of dataframe
