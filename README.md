@@ -31,7 +31,7 @@ For detailed information about how to add **tags** into class **Substance**, ple
 ### 2. Parsing Chromatography Instrument Date
 This document outlines the steps to parse three folders containing artificially generated and encoded chromatography data. Each folder represents a different challenge. The focus here is on the "Pear Challenge": time vs. intensity data, the "Scale Challenge": time vs. wavelength vs. absorbance data, and the "Sixtysix Challenge": time vs. mass vs. intensity data.
 
-#### (a) Pear Challenge (easy): time vs. intensity data
+#### (a) pear challenge (easy): time vs. intensity data
 **Solution for Requirement (a)**
 
 **(i) Examine the Raw Data**
@@ -55,13 +55,11 @@ The detailed information for the raw data listed in the table below:
 
 **(ii) Determine How the Data Are Stored in Binary Form**
 
-Up reviewing the "pear_original.csv" file, I observed that each line contains a pair of values (time, intensity), with each value requiring 4 bytes. The header occupies 320 bytes with the "H   " repeating throughou, and the footer is 480 bytes with the "H   " repeating throughou.
+Up reviewing the "pear_original.csv" file, I observed that each line contains a pair of values (time, intensity), with each value requiring 4 bytes. The header and footer, each with repeating "H   ", are 320 and 480 bytes respectively.
 
 **(iii) Write a Python program to Convert the Binary Data into csv Form (to parallel the provided csv)**
 
-To convert the binary data into a CSV format similar to **"pear_original.csv"**, I wrote a Python script. The script reads the binary file, processes the header, body, and footer sections, and extracts the time and intensity values.
-
-Here is the brief overview of the Python script:
+To convert the binary data into a CSV format similar to **"pear_original.csv"**, I wrote the following Python script:
    1. **Read the Binary File**: Open the binary file in read mode.
    2. **Parse the Header**: Skip the first 320 bytes (header).
    3. **Extract Time and Intensity Values**: Read the next 80,000 bytes (body) as pairs of 2X4-byte values, interpreting them as little-endian integers.
@@ -84,35 +82,33 @@ I used the command "format-hex scale | more" in Windows PowerShell and found the
    * 20 represents the factor.
    * 190 represents the start value of wavelength in list.
    * 400 represents the end value of wavelength in list.
-   * 10 represents the increment value in next wavelength compared to the previous one in the list.
-   * 12,345 represents the row number of body data.
+   * 10 represents the increment value in wavelength in the list.
+   * 12,345 represents the number of rows.
 5. In the body section, there are 12,345 segments, each beginning with the bytes b'HH' and containing 94 bytes.
 
 The detailed information for the raw data listed in the table below:
 | Name                              | offset      | Byte order       | Format   | 
 | --------------------------------- | ----------- | ---------------- | -------- |
 | factor                            | 128         | (>)big-endian    | h(2)     |
-| start value of wavelength in list | 256         | (>)big-endian    | h(2)     |
-| end value of wavelength in list   | 258         | (>)big-endian    | h(2)     |
+| start wavelength in list          | 256         | (>)big-endian    | h(2)     |
+| end wavelength in list            | 258         | (>)big-endian    | h(2)     |
 | increment                         | 260         | (>)big-endian    | h(2)     |
-| row number of body data           | 384         | (>)big-endian    | h(2)     |
-| body start with 12345 rows        | 512         | (>)big-endian    | h(2)     |
-| &nbsp;&nbsp;&nbsp;each row mark in body data     |             | (>)big-endian    | cc(2)    |
-| &nbsp;&nbsp;&nbsp;time in body data              |             | (<)little-endian | f(4)     |
+| number of rows                    | 384         | (>)big-endian    | h(2)     |
+| body start (12345 rows)           | 512         | (>)big-endian    | h(2)     |
+| &nbsp;&nbsp;&nbsp;each row mark in body          |             | (>)big-endian    | cc(2)    |
+| &nbsp;&nbsp;&nbsp;time in body                   |             | (<)little-endian | f(4)     |
 | &nbsp;&nbsp;&nbsp;absorbances in 22 wavelengths  |             | (>)big-endian    | 22i(22X4)|
 
 **(ii) Determine how the data are stored in binary form**
 
-Reviewing the corresponding **"scare_original.csv"**, it contains 12,345 lines. The header title lists wavelengths [190, 200, 210,...,400] each increasing by 10. This matches the observations from the header of binary data.
+Reviewing the corresponding **"scare_original.csv"**, it contains 12,345 lines. The header title lists wavelengths ranging from 190 to 400, each increasing by 10. This matches the observations from the header of binary data.
 
 **(iii) write a Python program that converts the binary data into csv form (to parallel the provided csv)**
 
-To convert the binary data into a CSV format similar to **"scale_original.csv"**, I wrote a Python script. The script reads the binary file, processes the header, and body sections, and extracts the time, wavelength, and absorbance values.
-
-Here is the brief overview of the Python script:
+To convert the binary data into a CSV format similar to **"scale_original.csv"**, I wrote a Python script.
    1. **Read the Binary File**: Open the binary file in read mode.
    2. **Parse the Header**: Read 5 components from the header section. They are **Factor, start_value, end_value, increment, and row_number**.
-   3. **Extract Time and absorbances Values**: Read the next (12345 X 94) bytes (body) with each row containing 94 (>cc(2) + <f(4) + >22i(22X4)) bytes, interpreting them as 2 big-endian chars plus little-endian float plus 22 big-endian integers.
+   3. **Extract Time and absorbances Values**: Read the next (12345 X 94) bytes (body) with each row containing 94 bytes. Each row is composed of 2 big-endian characters, following by a little-endian float, and then 22 big-endian integers.
    4. **Save to CSV**: Write the extracted time vs. wavelength vs. absorbances data to a CSV file.
    5. **Compare the CSV to "scale_original.csv"**: Compare the generated **"scale.csv"** with the **"scale_original.csv"** and output the differences.
       
@@ -121,34 +117,48 @@ For the complete Python Script, please refer to **"Chromatography_answer_b.py"**
 #### (c) sixtysix (hard – optional, for bonus points): time vs. mass vs. intensity data
 **Solution for Requirement (c)**
 
-(i) examine the raw data
+**(i) Examine the raw data**
 
-The binary file "sixtysix.A" contains 54,320 bytes, which is ten times the number of lines in the CSV file "sixtysix_original.csv". It is divided into 5,432 segments, each 10 bytes long, containing 3 values. The first and second values occupy 4 bytes each, and the third value occupies 2 bytes. The first value indicates the number of bytes preceding the row. The second value represents time and can be calculated by dividing it by 60,001 and rounding the result. Third value represents the number of non-zero values in the current row defined by the second time value.
+The binary file "sixtysix.A" contains 54,320 bytes, which is ten times the number of lines in the CSV file "sixtysix_original.csv". It is divided into 5,432 segments, each 10 bytes long, containing 3 values. 
+1. The first value: 4 bytes representing bytes preceding the row.
+2. The second value: 4 bytes representing time and can be calculated by dividing it by 60,001 and rounding the result.
+3. Third value: 2 bytes representing the number of non-zero values in the current row defined by the second value.
 
-The binary file "sixtysix.B" contains 352,236 bytes. Each segment is 6 bytes long, resulting in a total of 58,706 segments. Referencing "sixtysix_original.csv," each segment in "sixtysix.B" consists of a pair of values: <mass (2 bytes), intensity (4 bytes)>.
+The binary file "sixtysix.B" contains 352,236 bytes divided into 58,706 segments of 6 bytes each. Referencing "sixtysix_original.csv," each segment in "sixtysix.B" consists of a pair of values: 
+1. The first value: 2 bytes, representing mass
+2. The second value: 4 bytes, representing intensity.
 
-The detailed information for the A binary data listed in the table below:
+The detailed information for the "sixtysix.A" binary data is listed in the table below:
 | Name                             | Bytes       | Byte order        | Format   | 
 | -------------------------------- | ----------- | ----------------- | -------- |
 | A file(5432 segments)            | 54320       |                   |          |
 | Each segment in A file           | 10          |                   |          |
-|    1.  f_value (bytes preceding  | 4           | (>)big-endian     | I(4)     |
-|    2.  s_value (Time)            | 4           | (>)big-endian     | I(4)     |
-|    3.  t_value (No mass types)   | 2           | (>)big-endian     | H(2)     |
+| &nbsp;&nbsp;&nbsp;1.  f_value (bytes preceding) | 4           | (>)big-endian     | I(4)     |
+| &nbsp;&nbsp;&nbsp;2.  s_value (Time)            | 4           | (>)big-endian     | I(4)     |
+| &nbsp;&nbsp;&nbsp;3.  t_value (number of mass)  | 2           | (>)big-endian     | H(2)     |
 
-The detailed information for the B binary data listed in the table below:
+The detailed information for the "sixtysix.B" binary data listed in the table below:
 | Name                             | Bytes       | Byte order        | Format   | 
 | -------------------------------- | ----------- | ----------------- | -------- |
 | B file(58706 segment)            | 352236      |                   |          |
 | Each segment in B file           | 6           |                   |          |
-|    1.  f_value (mass type)       | 2           | (<))little-endian | H(2)     |
-|    2.  s_value (intensity)       | 4           | (<))little-endian | I(4)     |
+| &nbsp;&nbsp;&nbsp;1.  f_value (mass)            | 2           | (<))little-endian | H(2)     |
+| &nbsp;&nbsp;&nbsp;2.  s_value (intensity)       | 4           | (<))little-endian | I(4)     |
 
 
-(ii) determine how the data are stored in binary form
+**(ii) Determine how the data are stored in binary form**
 
-Reviewing the corresponding "sixtysix_original.csv," it contains 5,432 lines. The "Time (min)" information is derived from the A file, and the number of lines in csv file matches the number of segments in the binary A file. The "Intensity" information is sourced from the B file.
+Reviewing the corresponding "sixtysix_original.csv," it contains 5,432 lines. The "Time (min)" information is derived from the A file, and the number of lines in csv file matches the number of segments in the binary A file. The "Intensity" information with corresponding mass is sourced from the B file.
 
-(iii) write a Python program that converts the binary data into csv form (to parallel the provided csv)
+**(iii) write a Python program that converts the binary data into csv form (to parallel the provided csv)**
 
-To see the python script, please refer to "Chromatography_answer_c.py" and "chromatography.py" files.
+To convert the binary data into a CSV format similar to **"sixtysix_original.csv"**, I wrote a Python script. The script reads the binary file, processes the A and B files, and extracts the time, mass, and intensity values:
+   1. **Read the Binary Files**: Open the sixtysix.A and sixtysix.B binary files in read mode.
+   2. **Parse the sixtysix.A**: Read 10 bytes per segment with total 5432 segments from sixtysix.A binary file, extracting **bytes_proceding, time, and number_of_mass**.
+   3. **Parse the sixtysix.B**: Read 6 bytes per segment with total 58706 pairs from sixtysix.B binary file, extracting **mass, intensity**.
+   4. **Assemble dataframe from parsed sixtysix.A and sixtysix.B**: create a zero values dataframe with 5432(equal to number segments in A) rows and 48(equal to number of mass in B) columns, and index by time, and populate with mass and intensity values extracted from "sixtysix.B".
+   5. **Save to CSV**: Write the extracted time vs. mass vs. intensity data to a CSV file.
+   6. **Compare the CSV to "sixtysix_original.csv"**: Compare the generated **"sixtysix.csv"** with the **"sixtysit_original.csv"** and output the differences.
+      
+For the complete Python Script, please refer to **"Chromatography_answer_c.py"** and **"chromatography.py"** files.
+
