@@ -48,9 +48,9 @@ The detailed information for the raw data listed in the table below:
 | ------------------------------ | -------- | ---------------- | -------- |
 | header                         | 320      |                  |          |
 | body (10000 pairs)             | 80000    |                  |          |
-| &nbsp;&nbsp;each pair (time, Intensity) | 8        |                  |          |
-| &nbsp;&nbsp;&nbsp;&nbsp;time                        | 4        | (<)little-endian | I(4)     |
-| &nbsp;&nbsp;&nbsp;&nbsp;intensity                   | 4        | (<)little-endian | I(4)     |
+| &nbsp;&nbsp;&nbsp;each pair (time, Intensity) | 8        |                  |          |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;time      | 4        | (<)little-endian | I(4)     |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;intensity | 4        | (<)little-endian | I(4)     |
 | footer                         | 480      |                  |          |
 
 **(ii) Determine How the Data Are Stored in Binary Form**
