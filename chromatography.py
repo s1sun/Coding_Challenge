@@ -3,6 +3,8 @@ import pandas as pd
 import numpy as np
 
 def canconcate_items(row, delim):
+    # pre: given a list of string row and delimilator
+    # post: return a string, each element canconcated by delimilator 
     mystr = ""
     if len(row) > 0:
         mystr = str(row[0])
@@ -11,6 +13,8 @@ def canconcate_items(row, delim):
     return mystr
 
 def write_to_csv_WOCR(csv_file, title, data): # over different platforms
+    # pre: given csv_file pathway, a list of title, and 2D arrays
+    # post: save to csv file without CR line break located at csv_file      
     with open(csv_file, 'w', newline='') as f:
         str_title = canconcate_items(title, ',')
         f.write(str_title)
@@ -19,6 +23,9 @@ def write_to_csv_WOCR(csv_file, title, data): # over different platforms
             f.write("\n" + str_line)
 
 def parse_pear_binary(binary_file_path, csv_file_path):
+    # pre: given binary and csv file pathways
+    # post: After parsing the binary data and then save to csv format file located at csv_file_path 
+    
     # load binary data
     binary_data = b''
     with open(binary_file_path, 'rb') as file:
@@ -42,6 +49,10 @@ def parse_pear_binary(binary_file_path, csv_file_path):
 
     
 def parse_scale_binary_head(f, nbytes, head_bytes):
+    # pre: given file pointer f, Standard size of bytes nbytes, number of bytes in header section.
+    # post: extract all informations extracted head_bytes and return a list of heads information and file pointer 
+    # Assuming each head information occupies 2 bytes integer with big_endian
+    
     passed_bytes = 0
     read_bytes = f.read(nbytes)
     passed_bytes += nbytes
@@ -82,7 +93,6 @@ def parse_scale_binary(binary_file_path, csv_file_path):
             while len(decimals)<4:
                 decimals += '0'
             time = pre + "." + decimals
-            
             
             # Read subsequent bytes for absorbance values
             absorbances = []
@@ -128,11 +138,15 @@ def parse_sixtysix_binary(binary_file_A, binary_file_B, csv_file_path):
         str_time = pre + "." + decimals
         times.append(str_time)
 
+    # parse sixtysix format: B file has 58,076 segments. Each contains 6 bytes with 2 values: 
+    #    the first value occupy 2 bytes, and the second value occupies 4 bytes
     for i in range(0, len(binary_data_B), 6):
         pair = struct.unpack_from('<HI', binary_data_B, i)
         decoded_valuesB.append(pair)
         if pair[0] not in massset:
             massset.add(pair[0])
+    
+    # create a zero datadframe with index = time, columns = number of mass values
     df = pd.DataFrame(0, index=times, columns=sorted(massset))
 
     # fill in time, mass, intensity into cell of dataframe
