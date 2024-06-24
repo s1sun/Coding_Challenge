@@ -12,7 +12,7 @@ where Ai and Bi are starting materials, Ci is a product, and i runs from 1…12.
 
 **Solution for Requirement (a)**
 
-The pyplate software package is a Python tool designed to facilitate the design and implementation of high-throughput chemistry and biology experiments. To display the results correctly. The following packages must be installed. 
+The pyplate software package is a Python tool designed to facilitate the design and implementation of high-throughput chemistry and biology experiments. To display the results correctly. The following packages must be installed in your environment. 
    - python 3.10 or later
    - pyplate-hte 1.16.0 or later
    - Jupyter Notebook
@@ -20,7 +20,7 @@ The pyplate software package is a Python tool designed to facilitate the design 
 For detailed information about how to screen **temperatures, solvents, ligands, and Ai_mw vs Bi_mw**, please refer to the "PyPlate_answer_a.ipynb" file.
 
 #### (b): Explaining modification to PyPlate
->The goal is to explain how to modify PyPlate to incorporate a feature like **tags** containing customer-additional rewuirements.
+>The goal is to explain how to modify PyPlate to incorporate a feature like **tags** containing customer-additional requirements.
 
 **Solution for Requirement (b)**
 
@@ -36,25 +36,25 @@ Belows are three folders with artificially generated and encoded chromatography 
 
 (i) examine the raw data
 
-I used the command "format-hex pear | more" from Wondows PowerShell and discovered that the binary data is divided into three sections: head, body and footer.
-1. Each value is 4 bytes
+I used the command "format-hex pear | more" from Wondows PowerShell and discovered that the binary data is divided into three sections: header, body and footer.
+1. Each value occupy 4 bytes
 2. The header consists of 320 bytes with the "H   " repeating throughout.
-3. The body contains 10000 pairs values, with each pair occupying 4 bytes.
-4. the footer consists of 480 bytes with the "H   " repeating throughout.
+3. The body contains 10000 pairs values, with each pair occupying 2 X 4 bytes.
+4. The footer consists of 480 bytes with the "H   " repeating throughout.
 
 The detailed information for the raw data listed in the table below:
 | Name                           | Bytes    | Byte order       | Format   | 
 | ------------------------------ | -------- | ---------------- | -------- |
 | header                         | 320      |                  |          |
-| body (10000 segments)          | 80000    |                  |          |
-| each segment (time, Intensity) | 8        |                  |          |
+| body (10000 pairs)             | 80000    |                  |          |
+| each pair (time, Intensity)    | 8        |                  |          |
 | time                           | 4        | (<)little-endian | I(4)     |
 | intensity                      | 4        | (<)little-endian | I(4)     |
 | footer                         | 480      |                  |          |
 
 (ii) determine how the data are stored in binary form
 
-Up reviewing the "pear_original.csv" file, each line contains a pair of values (time, intensity), each value requiring 4 bytes. The header is 320 bytes, and the footer is 480 bytes.
+Up reviewing the "pear_original.csv" file, each line contains a pair of values (time, intensity), each value requiring 4 bytes. The header occupies 320 bytes with the "H   " repeating throughou, and the footer is 480 bytes with the "H   " repeating throughou.
 
 (iii) write a Python program that converts the binary data into csv form (to parallel the provided csv)
 
