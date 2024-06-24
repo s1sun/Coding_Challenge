@@ -1,4 +1,5 @@
 import chromatography
+import pandas as pd
 
 ### Chromatography_answer_b.py
 # ---------- main ---------- #
