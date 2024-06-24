@@ -140,7 +140,7 @@ The detailed information for the "sixtysix.A" binary data is listed in the table
 The detailed information for the "sixtysix.B" binary data listed in the table below:
 | Name                             | Bytes       | Byte order        | Format   | 
 | -------------------------------- | ----------- | ----------------- | -------- |
-| B file(58706 segment)            | 352236      |                   |          |
+| B file(58706 segments)           | 352236      |                   |          |
 | Each segment in B file           | 6           |                   |          |
 | &nbsp;&nbsp;&nbsp;1.  f_value (mass)            | 2           | (<))little-endian | H(2)     |
 | &nbsp;&nbsp;&nbsp;2.  s_value (intensity)       | 4           | (<))little-endian | I(4)     |
