@@ -62,12 +62,12 @@ Up reviewing the "pear_original.csv" file, I observed that each line contains a 
 To convert the binary data into a CSV format similar to **"pear_original.csv"**, I wrote a Python script. The script reads the binary file, processes the header, body, and footer sections, and extracts the time and intensity values.
 
 Here is the brief overview of the Python script:
-   1. **Read the Binary File**: Open the binary file in read mpde.
+   1. **Read the Binary File**: Open the binary file in read mode.
    2. **Parse the Header**: Skip the first 320 bytes (header).
-   3. **Extract Time and Intensity Values**: Read the next 80,000 bytes (body) as pairs of 4-byte values, interpreting them as little-endian integers.
+   3. **Extract Time and Intensity Values**: Read the next 80,000 bytes (body) as pairs of 2X4-byte values, interpreting them as little-endian integers.
    4. **Parse the Footer**: Skip the last 480 bytes (footer).
    5. **Save to CSV**: Write the extracted time and intensity values to a CSV file.
-   6. **Compare the CSV to "pear_original.csv"**: Compare the generated **pear.csv** with the "pear_original.csv" and output the differences.
+   6. **Compare the CSV to "pear_original.csv"**: Compare the generated **"pear.csv"** with the **"pear_original.csv"** and output the differences.
 
 For the complete Python Script, please refer to **"Chromatography_answer_a.py"** and **"chromatography.py"** files.
 
@@ -79,7 +79,7 @@ For the complete Python Script, please refer to **"Chromatography_answer_a.py"**
 I used the command "format-hex scale | more" in Windows PowerShell and found the following:
 1. The binary data is divided into two sections: header and body.
 2. The header section contains 512 bytes.
-3. The body section contains 1160430 bytes, beginning with "HH". The "HH" bytes repeat 12,345 times.
+3. The body section contains 1,160,430 bytes, beginning with "HH". The "HH" bytes repeat 12,345 times.
 4. Parsing the header revealed 5 values: 20, 190, 400, 10, and 12,345.
    * 20 represents the factor.
    * 190 represents the start value of wavelength in list.
@@ -96,18 +96,27 @@ The detailed information for the raw data listed in the table below:
 | end value of wavelength in list   | 258         | (>)big-endian    | h(2)     |
 | increment                         | 260         | (>)big-endian    | h(2)     |
 | row number of body data           | 384         | (>)big-endian    | h(2)     |
-| start of body with 12345 rows     | 512         | (>)big-endian    | h(2)     |
-|    each row mark in body data     |             | (>)big-endian    | cc(2)    |
-|    time in body data              |             | (<)little-endian | f(4)     |
-|    wavelength in body data        |             | (>)big-endian    | i(4)     |
+| body start with 12345 rows        | 512         | (>)big-endian    | h(2)     |
+| &nbsp;&nbsp;&nbsp;each row mark in body data     |             | (>)big-endian    | cc(2)    |
+| &nbsp;&nbsp;&nbsp;time in body data              |             | (<)little-endian | f(4)     |
+| &nbsp;&nbsp;&nbsp;absorbances in 22 wavelengths  |             | (>)big-endian    | 22i(22X4)|
 
-(ii) determine how the data are stored in binary form
+**(ii) Determine how the data are stored in binary form**
 
-Reviewing the corresponding "scare_original.csv", it contains 12345 lines. The header title lists wavelengths [190, 200, 210,...,400] each increasing by 10. This matches the observations from the header of binary data.
+Reviewing the corresponding **"scare_original.csv"**, it contains 12,345 lines. The header title lists wavelengths [190, 200, 210,...,400] each increasing by 10. This matches the observations from the header of binary data.
 
-(iii) write a Python program that converts the binary data into csv form (to parallel the provided csv)
+**(iii) write a Python program that converts the binary data into csv form (to parallel the provided csv)**
 
-To see the python script, please refer to "Chromatography_answer_b.py" and "chromatography.py" files.
+To convert the binary data into a CSV format similar to **"scale_original.csv"**, I wrote a Python script. The script reads the binary file, processes the header, and body sections, and extracts the time, wavelength, and absorbance values.
+
+Here is the brief overview of the Python script:
+   1. **Read the Binary File**: Open the binary file in read mode.
+   2. **Parse the Header**: Read 5 components from the header section. They are **Factor, start_value, end_value, increment, and row_number**.
+   3. **Extract Time and absorbances Values**: Read the next (12345 X 94) bytes (body) with each row containing 94 (>cc(2) + <f(4) + >22i(22X4)) bytes, interpreting them as 2 big-endian chars plus little-endian float plus 22 big-endian integers.
+   4. **Save to CSV**: Write the extracted time vs. wavelength vs. absorbances data to a CSV file.
+   5. **Compare the CSV to "scale_original.csv"**: Compare the generated **"scale.csv"** with the **"scale_original.csv"** and output the differences.
+      
+For the complete Python Script, please refer to **"Chromatography_answer_b.py"** and **"chromatography.py"** files.
 
 #### (c) sixtysix (hard – optional, for bonus points): time vs. mass vs. intensity data
 **Solution for Requirement (c)**
