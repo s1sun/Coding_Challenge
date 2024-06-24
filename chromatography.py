@@ -138,7 +138,7 @@ def parse_sixtysix_binary(binary_file_A, binary_file_B, csv_file_path):
         str_time = pre + "." + decimals
         times.append(str_time)
 
-    # parse sixtysix format: B file has 58,076 segments. Each contains 6 bytes with 2 values: 
+    # parse sixtysix format: B file has 58,706 segments. Each contains 6 bytes with 2 values: 
     #    the first value occupy 2 bytes, and the second value occupies 4 bytes
     for i in range(0, len(binary_data_B), 6):
         pair = struct.unpack_from('<HI', binary_data_B, i)
@@ -156,8 +156,10 @@ def parse_sixtysix_binary(binary_file_A, binary_file_B, csv_file_path):
             pair = decoded_valuesB[count]
             df.loc[times[i], pair[0]] =  pair[1]
             count += 1
-    
-    df = df.rename_axis('Time (min)').reset_index()       
+
+    # set datafrane index as first column with name 'Time (min)' and then reset index
+    df = df.rename_axis('Time (min)').reset_index() 
+    # convert dataframe to list
     decoded_values = df.values.tolist()
     
     # write list into files
