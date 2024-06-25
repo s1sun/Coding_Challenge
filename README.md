@@ -65,7 +65,7 @@ To convert the binary data into a CSV format similar to **"pear_original.csv"**,
    3. **Extract Time and Intensity Values**: Read the next 80,000 bytes (body) as pairs of 2X4-byte values, interpreting them as little-endian integers.
    4. **Parse the Footer**: Skip the last 480 bytes (footer).
    5. **Save to CSV**: Write the extracted time and intensity values to a CSV file.
-   6. **Compare the CSV to "pear_original.csv"**: Compare the generated **"pear.csv"** with the **"pear_original.csv"** and output the differences.
+   6. **Compare the CSV to "pear_original.csv"**: Verify the generated **"pear.csv"** with the **"pear_original.csv"** and display the comparison results with no differences.
 
 For the complete Python Script, please refer to **"Chromatography_answer_a.py"** and **"chromatography.py"** files.
 
@@ -110,7 +110,7 @@ To convert the binary data into a CSV format similar to **"scale_original.csv"**
    2. **Parse the Header**: Read 5 components from the header section. They are **Factor, start_value, end_value, increment, and row_number**.
    3. **Extract Time and absorbances Values**: Read the next (12345 X 94) bytes (body) with each row containing 94 bytes. Each row is composed of 2 big-endian characters, following by a little-endian float, and then 22 big-endian integers.
    4. **Save to CSV**: Write the extracted time vs. wavelength vs. absorbances data to a CSV file.
-   5. **Compare the CSV to "scale_original.csv"**: Compare the generated **"scale.csv"** with the **"scale_original.csv"** and output the differences.
+   5. **Compare the CSV to "scale_original.csv"**: Verify the generated **"scale.csv"** with the **"scale_original.csv"** and display the comparison results with no differences.
       
 For the complete Python Script, please refer to **"Chromatography_answer_b.py"** and **"chromatography.py"** files.
 
@@ -158,7 +158,7 @@ To convert the binary data into a CSV format similar to **"sixtysix_original.csv
    3. **Parse the sixtysix.B**: Read 6 bytes per segment with total 58706 pairs from sixtysix.B binary file, extracting **mass, intensity**.
    4. **Assemble dataframe from parsed sixtysix.A and sixtysix.B**: create a zero values dataframe with 5432(equal to number segments in A) rows and 48(equal to number of mass in B) columns, and index by time, and populate with mass and intensity values extracted from "sixtysix.B".
    5. **Save to CSV**: Write the extracted time vs. mass vs. intensity data to a CSV file.
-   6. **Compare the CSV to "sixtysix_original.csv"**: Compare the generated **"sixtysix.csv"** with the **"sixtysit_original.csv"** and output the differences.
+   6. **Compare the CSV to "sixtysix_original.csv"**: Verify the generated **"sixtysix.csv"** with the **"sixtysit_original.csv"** and display the comparison results with no differences.
       
 For the complete Python Script, please refer to **"Chromatography_answer_c.py"** and **"chromatography.py"** files.
 
