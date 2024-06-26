@@ -35,7 +35,7 @@ def parse_scale_binary(binary_file_path):
     Returns:
         tuple: A tuple containing the title (list of strings) and the decoded values (list of lists).
     """
-    decoded_valus = []
+    decoded_values = []
     heads = []         
     with open(binary_file_path, 'rb') as f:
         nbytes = 2
@@ -63,7 +63,7 @@ def parse_scale_binary(binary_file_path):
                 absorbance_bytes = f.read(nbytes)
                 absorbance = struct.unpack('>i', absorbance_bytes)[0]//heads[0]
                 absorbances.append(absorbance)
-            decoded_valus.append([time] + absorbances)
+            decoded_values.append([time] + absorbances)
             lines += 1
             
             HH_bytes = f.read(2)
@@ -72,7 +72,7 @@ def parse_scale_binary(binary_file_path):
     
     # Define the title header
     title = ["Time (min)"] + wavelengths
-    return title, decoded_valus
+    return title, decoded_values
 
 ### Chromatography_answer_b.py
 
