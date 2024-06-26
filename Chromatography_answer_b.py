@@ -2,6 +2,7 @@ import chromatography
 import pandas as pd
 import struct
 import sys
+import platform
 
 def parse_scale_binary_head(f, nbytes, metalocs):
     """
@@ -90,7 +91,9 @@ if __name__ == '__main__':
     title, decoded_values = parse_scale_binary(binary_file_path)
     
     # save the title and data to a csv file
-    line_end = '\r\n'
+    line_end = '\n'
+    if platform.system() == 'Windows':
+        line_end = '\r\n'
     chromatography.write_to_csv(csv_out_path, title, decoded_values, line_end)
     
     # Compare the generated CSV with the sample/scale.csv file
