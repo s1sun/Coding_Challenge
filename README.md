@@ -3,7 +3,7 @@ My name is Shaojun Sun. My resume has been loaded as "resume_software.doc". For 
 ### 1. Designing High-Throughput Chemistry and Biology Experiments
 PyPlate is a Python package for designing high-throughput chemistry and biology experiments. Suppose that you need to screen conditions for 12 cross-coupling reactions of the form:
 
-A~i~ + B~i~ → C~i~
+A<sub>i</sub> + B<sub>i</sub> → C<sub>i</sub>
 
 where A~i~ and B~i~ are starting materials, C~i~ is a product, and i runs from 1…12.  For each reaction, let A~i~ be the limiting reagent (0.1 mmol), add 1.1 equivalents of Bi, 10 mol% Pd(OAc)~2~, and 15 mol% of ligand. 
 
