@@ -34,6 +34,10 @@ def parse_pear_binary(binary_file_path):
     return title, decoded_values
 
 ### Chromatography_answer_a.py
+
+# This script parses binary data files in the 'pear' format, validates the parsing with sample data, 
+# and generates test results on additional datasets.
+
 # ---------- main ---------- #
 if __name__ == '__main__':
     # 1. Validate the program with sample data
