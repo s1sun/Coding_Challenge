@@ -128,6 +128,29 @@ The binary file "sixtysix.B" contains 352,236 bytes divided into 58,706 segments
 1. The first value: 2 bytes, representing mass
 2. The second value: 4 bytes, representing intensity.
 
+I used the command "format-hex sixtysix.C" in Windows PowerShell and found the following: 
+- The file starts with "1F 8B", which is the magic number for gzip compressed files.
+- This indicates that the data is compressed using gzip
+
+Before dealing with binary files, the "sixtysix.C" will be first analyzed by decompressed using python script.
+```
+import gzip
+import binascii
+
+# load binary data from sixtysix_C file
+binary_file_C = 'sixtysix/sixtysix.C'
+binary_data_C = b''
+with open(binary_file_C, 'rb') as fileC:
+   binary_data_C = fileC.read()
+
+# Decompress the gzip data
+decompressed_data = gzip.decompress(binary_data)
+
+# Print the decompressed data
+print(decompressed_data)
+```
+The python script outputs the result **"There Is Nothing Useful In This File"** repeating.
+
 The detailed information for the "sixtysix.A" binary data is listed in the table below:
 | Name                             | Bytes       | Byte order        | Format   | 
 | -------------------------------- | ----------- | ----------------- | -------- |
