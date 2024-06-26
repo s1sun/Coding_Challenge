@@ -2,8 +2,16 @@
 # Author: Shaojun Sun
 
 def canconcate_items(row, delim):
-    # pre: given a list of string row and delimilator
-    # post: return a string, each element canconcated by delimilator 
+    """
+    Concatenates a list of string elements into a single string with a specified delimiter.
+
+    Args:
+        row (list of str): List of string elements to concatenate.
+        delim (str): Delimiter to use between elements.
+
+    Returns:
+        str: Concatenated string with elements separated by the delimiter.
+    """
     mystr = ""
     if len(row) > 0:
         mystr = str(row[0])
@@ -12,8 +20,18 @@ def canconcate_items(row, delim):
     return mystr
 
 def write_to_csv(csv_file, title,  data, line_end='\n'): # over different platforms
-    # pre: given csv_file pathway, a list of title, and 2D arrays
-    # post: save to csv file without CR line break
+    """
+    Writes a title and 2D array of data to a CSV file, with an optional parameter for line ending characters.
+
+    Args:
+        csv_file (str): Pathway of the CSV file to write to.
+        title (list of str): List of title elements for the CSV.
+        data (list of list of str): 2D array of data to write to the CSV.
+        line_end (str, optional): Line ending character(s) for the CSV file. Defaults to '\n'.
+
+    Returns:
+        None
+    """
     with open(csv_file, 'w', newline='') as f:
         str_title = canconcate_items(title, ',')
         f.write(str_title)
