@@ -5,7 +5,7 @@ PyPlate is a Python package for designing high-throughput chemistry and biology 
 
 A<sub>i</sub> + B<sub>i</sub> → C<sub>i</sub>
 
-where A~i~ and B~i~ are starting materials, C~i~ is a product, and i runs from 1…12.  For each reaction, let A~i~ be the limiting reagent (0.1 mmol), add 1.1 equivalents of Bi, 10 mol% Pd(OAc)~2~, and 15 mol% of ligand. 
+where A<sub>i</sub> and B<sub>i</sub> are starting materials, C<sub>i</sub> is a product, and i runs from 1…12.  For each reaction, let A<sub>i</sub> be the limiting reagent (0.1 mmol), add 1.1 equivalents of B<sub>i</sub>, 10 mol% Pd(OAc)<sub>2</sub>, and 15 mol% of ligand. 
 
 #### (a) [optional]: Screening a Common set of Conditions
 >We aim to screen a common set of 2 **temperatures** (60 °C and 80 °C), 4 **solvents** (toluene, glyme, TBME, and dichloroethane), and 3 **ligands** (XPhos, SPhos, and dppf). 
