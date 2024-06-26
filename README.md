@@ -119,16 +119,16 @@ For the complete Python Script, please refer to **"Chromatography_answer_b.py"**
 
 **(i) Examine the raw data**
 
-The binary file "sixtysix.A" contains 54,320 bytes, which is ten times the number of lines in the CSV file "sixtysix_original.csv". It is divided into 5,432 segments, each 10 bytes long, containing 3 values. 
+The binary file **"sixtysix.A"** contains 54,320 bytes, which is ten times the number of lines in the CSV file "sixtysix_original.csv". It is divided into 5,432 segments, each 10 bytes long, containing 3 values. 
 1. The first value: 4 bytes representing bytes preceding the row.
 2. The second value: 4 bytes representing time and can be calculated by dividing it by 60,001 and rounding the result.
 3. Third value: 2 bytes representing the number of non-zero values in the current row defined by the second value.
 
-The binary file "sixtysix.B" contains 352,236 bytes divided into 58,706 segments of 6 bytes each. Referencing "sixtysix_original.csv," each segment in "sixtysix.B" consists of a pair of values: 
+The binary file **"sixtysix.B"** contains 352,236 bytes divided into 58,706 segments of 6 bytes each. Referencing "sixtysix_original.csv," each segment in "sixtysix.B" consists of a pair of values: 
 1. The first value: 2 bytes, representing mass
 2. The second value: 4 bytes, representing intensity.
 
-I used the command "format-hex sixtysix.C" in Windows PowerShell and found the following: 
+I used the command **"format-hex sixtysix.C"** in Windows PowerShell and found the following: 
 - The file starts with "1F 8B", which is the magic number for gzip compressed files. This indicates that the data is compressed using gzip
 
 Before dealing with binary files, the "sixtysix.C" will be first analyzed by decompressing it using the floowing python script:
