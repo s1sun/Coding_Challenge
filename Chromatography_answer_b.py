@@ -3,31 +3,27 @@ import pandas as pd
 import struct
 import sys
 
-def parse_scale_binary_head(f, nbytes, head_bytes):
+def parse_scale_binary_head(f, nbytes, metalocs):
     """
     Parses the header of the binary file to extract metadata.
 
     Args:
         f (file object): File object for the binary file.
         nbytes (int): Number of bytes to read at a time.
-        head_bytes (int): Total number of bytes in the header.
+        metalocs (list of int): List of positions in the file where header information is located.
 
     Returns:
-        tuple: A tuple containing the list of header values and the file object.
+        list: A list of header values extracted from the binary file.
     """
-    passed_bytes = 0
-    read_bytes = f.read(nbytes)
-    passed_bytes += nbytes
     heads = []
-    if not read_bytes:
-        exit(0)
-    while passed_bytes < head_bytes:
-        if read_bytes != b'\x00\x00':
-            head = struct.unpack('>h', read_bytes)[0]
-            heads.append(head)
+    for i in range(len(metalocs)):
+        f.seek(metalocs[i])
         read_bytes = f.read(nbytes)
-        passed_bytes += nbytes
-    return heads, f
+        if not read_bytes:
+            exit(1)
+        head = struct.unpack('>h', read_bytes)[0]
+        heads.append(head)
+    return heads
 
 def parse_scale_binary(binary_file_path):
     """
@@ -43,8 +39,10 @@ def parse_scale_binary(binary_file_path):
     heads = []         
     with open(binary_file_path, 'rb') as f:
         nbytes = 2
-        heads, f = parse_scale_binary_head(f, nbytes, 512)
+        metalocs = [128, 256, 258, 260, 384]
+        heads = parse_scale_binary_head(f, nbytes, metalocs)
         wavelengths = list(range(heads[1], heads[2]+1, heads[3]))
+        f.seek(512)
         HH_bytes = f.read(nbytes)
         nbytes = 4
         lines = 0
