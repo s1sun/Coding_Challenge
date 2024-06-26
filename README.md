@@ -131,7 +131,7 @@ The binary file **"sixtysix.B"** contains 352,236 bytes divided into 58,706 segm
 I used the command **"format-hex sixtysix.C"** in Windows PowerShell and found the following: 
 - The file starts with "1F 8B", which is the magic number for gzip compressed files. This indicates that the data is compressed using gzip
 
-Before dealing with binary files **"sixtysix.A"** and **"sixtysix.B"**, the **"sixtysix.C"** should first be analyzed by decompressing it using the following python script:
+Before dealing with binary files **"sixtysix.A"** and **"sixtysix.B"**, the file **"sixtysix.C"** should first be analyzed by decompressing it using the following python script:
 ```
 import gzip
 
