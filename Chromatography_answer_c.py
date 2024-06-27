@@ -6,11 +6,21 @@ import gzip
 import platform
 
 def is_binary_C_gzip(binary_file_C):
-    # load binary data
+    """
+    Check if the provided binary file is in gzip format.
+
+    Args:
+        binary_file_C (str): Path to the binary file to check.
+
+    Returns:
+        bool: True if the file is a gzip file, False otherwise.
+    """
+    # load binary data from the file
     binary_data_C = b''
     with open(binary_file_C, 'rb') as fileC:
         binary_data_C = fileC.read()
     
+    # Check the first two bytes for the gzip magic number
     if binary_data_C[:2] == b'\x1F\x8B':
         print('binary_file_C is a gzip file')
         # Decompress the gzip data
@@ -22,10 +32,21 @@ def is_binary_C_gzip(binary_file_C):
     
 
 def parse_sixtysix_binary(binary_file_A, binary_file_B):
-    # load binary data
+    """
+    Parse binary data files in the 'sixtysix' format.
+
+    Args:
+        binary_file_A (str): Path to the binary file A.
+        binary_file_B (str): Path to the binary file B.
+
+    Returns:
+        tuple: A tuple containing the title (list) and decoded values (list of lists).
+    """
+    # load binary data from file A
     binary_data_A = b''
     with open(binary_file_A, 'rb') as fileA:
         binary_data_A = fileA.read()
+    # Load binary data from file B
     binary_data_B = b''
     with open(binary_file_B, 'rb') as fileB:
         binary_data_B = fileB.read()
@@ -35,8 +56,8 @@ def parse_sixtysix_binary(binary_file_A, binary_file_B):
     decoded_valuesB = []
     times = []
     
-    # parse sixtysix.A format: Each swegment contains 10 bytes with 3 values: 
-    #    the first and second values occupy 4 bytes each, and the third occupies 2 bytes
+    # parse binary data in file A format
+    # Each swegment contains 10 bytes with big-endianess: 3 values (4 bytes, 4 bypes, 2 bytes)
     for i in range(0, len(binary_data_A), 10):
         segs = struct.unpack_from('>IIH', binary_data_A, i)
         decoded_valuesA.append(segs)
@@ -49,8 +70,8 @@ def parse_sixtysix_binary(binary_file_A, binary_file_B):
         str_time = pre + "." + decimals
         times.append(str_time)
     
-    # parse sixtysix.B format: Each swegment contains 6 bytes with 2 values: 
-    #    the first values occupy 2 bytes, and the second occupies 4 bytes
+    # parse binary data in file B
+    # Each segment contains 6 bytes with little-endianess: 2 values ( 2 bytes, 4 bytes)
     for i in range(0, len(binary_data_B), 6):
         pair = struct.unpack_from('<HI', binary_data_B, i)
         decoded_valuesB.append(pair)
@@ -60,13 +81,13 @@ def parse_sixtysix_binary(binary_file_A, binary_file_B):
     # Assemble a zero dataframe with index=times and columns=sorted(massset)
     df = pd.DataFrame(0, index=times, columns=sorted(massset))
 
-    # fill in time, mass, intensity into cell of dataframe
+    # fill in time, mass, intensity into cell of the dataframe
     for i in range(len(times)):
         for j in range(decoded_valuesA[i][2]):
             pair = decoded_valuesB[decoded_valuesA[i][0]//6 + j]
             df.loc[times[i], pair[0]] =  pair[1]
     
-    # set index as first column of dataframe and then reset index
+    # set index as first column of the dataframe and then reset index
     df = df.rename_axis('Time (min)').reset_index() 
 
     # convert dataframe to list of list     
@@ -91,13 +112,13 @@ if __name__ == '__main__':
     csv_out_path = 'sixtysix/sample/sixtysix_out.csv'
     
     if not is_binary_C_gzip(binary_file_C):
-        print("sixtysix.C is fitted the expected gzip file, must exit.")
+        print("sixtysix.C is not the expected gzip file, must exit.")
         sys.exit(1)
         
     # Parse the binary file to get the decoded data and title
     title, decoded_values = parse_sixtysix_binary(binary_file_A, binary_file_B)
     
-    # save the title and data to a csv file
+    # save the title and data to a csv file with right line_end
     line_end = '\n'
     if platform.system() == 'Windows':
         line_end = '\r\n'
@@ -117,7 +138,7 @@ if __name__ == '__main__':
     binary_fpaths = ['sixtysix/problem1/sixtysix','sixtysix/problem2/sixtysix','sixtysix/problem3/sixtysix']
     # line_end = '\n'
     for binary_fpath in binary_fpaths:
-        # Parse and save each binary file as a CSV file
+        # Parse and save encoded binary data as a CSV file
         binary_fpath_A = binary_fpath + '.A'
         binary_fpath_B = binary_fpath + '.B'
         binary_fpath_C = binary_fpath + '.C'
