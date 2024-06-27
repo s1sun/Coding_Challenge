@@ -37,13 +37,23 @@ This document outlines the steps to parse three folders containing artificially 
 **(i) Examine the Raw Data**
 
 To begin, I used the command `format-hex pear | more` from Windows PowerShell to inspect the binary data. I discovered the following: 
-1. The binary data is divided into three sections: header, body and footer.
-2. Each value occupies 4 bytes
-3. The header consists of 320 bytes with the "H   " repeating throughout.
-4. The body contains 10,000 pairs of values, with each pair occupying 2 X 4 bytes.
-5. The footer consists of 480 bytes with the "H   " repeating throughout.
+1. The binary data is divided into three sections sequencely: header, body and footer.
+2. The first section header consists of 320 bytes with the "H   " 4 bytes repeating throughout.
+3. The second section body contains 80,000 bytes with pairs (time, intensity), with each pair occupying 2 X 4 bytes.
+4. The third section footer consists of 480 bytes with the "H   " 4 bytes repeating throughout.
 
 The detailed information for the raw data listed in the table below:
+| Location | Length(bytes) | Endianess | Format   | Value                |
+| -------- | ------------- | --------- | -------- | ---------------------|
+| 0        | 320           |           |          | header               |                       
+| 320      | 80,000        | little    | I(int)   | body                 |
+| 320      | 4             | little    | I(int)   | &nbsp;&nbsp;&nbsp;&nbsp;time      |
+| 324      | 4             | little    | I(int)   | &nbsp;&nbsp;&nbsp;&nbsp;intensity |
+| 80,320   | 480           |           |          | footer               |
+
+
+
+
 | Name                           | Bytes    | Byte order       | Format   | 
 | ------------------------------ | -------- | ---------------- | -------- |
 | header                         | 320      |                  |          |
