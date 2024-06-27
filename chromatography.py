@@ -1,5 +1,23 @@
 #!/usr/bin/env python3
 # Author: Shaojun Sun
+from decimal import Decimal, ROUND_HALF_EVEN
+
+def precision_round(value, decimal, decimal_str):
+    """
+    Get a precise rounding behavior instead of round() function in python yielding un expected results. 
+
+    Args:
+        value (float): The value that needs to be rounded.
+        decimal(int): The precision number to use for rounding
+        decimal_str (str): Accuracy string with corresponding decimal, such as "0.0001' for 4 decimal.
+
+    Returns:
+        str: Concatenated string with elements separated by the delimiter.
+    """
+    value_str = str(value)
+    number = Decimal(value_str)
+    result = number.quantize(Decimal(decimal_str), rounding=ROUND_HALF_EVEN)
+    return float(result)
 
 def canconcate_items(row, delim):
     """
