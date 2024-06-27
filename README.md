@@ -51,18 +51,6 @@ The detailed information for the raw data listed in the table below:
 | 324      | 4             | little    | I(int)   | &nbsp;&nbsp;&nbsp;&nbsp;intensity |
 | 80,320   | 480           |           |          | footer               |
 
-
-
-
-| Name                           | Bytes    | Byte order       | Format   | 
-| ------------------------------ | -------- | ---------------- | -------- |
-| header                         | 320      |                  |          |
-| body (10000 pairs)             | 80000    |                  |          |
-| &nbsp;&nbsp;&nbsp;each pair (time, Intensity) | 8        |                  |          |
-| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;time      | 4        | (<)little-endian | I(4)     |
-| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;intensity | 4        | (<)little-endian | I(4)     |
-| footer                         | 480      |                  |          |
-
 **(ii) Determine How the Data Are Stored in Binary Form**
 
 Up reviewing the "pear_original.csv" file, I observed that each line contains a pair of values (time, intensity), with each value requiring 4 bytes. The header and footer, each with repeating "H   ", are 320 and 480 bytes respectively.
@@ -86,17 +74,30 @@ For the complete Python Script, please refer to **"Chromatography_answer_a.py"**
 
 I used the command "format-hex scale | more" in Windows PowerShell and found the following:
 1. The binary data is divided into two sections: header and body.
-2. The header section contains 512 bytes.
-3. The body section contains 1,160,430 bytes, beginning with "HH". The "HH" bytes repeat 12,345 times.
-4. Parsing the header revealed 5 values: 20, 190, 400, 10, and 12,345.
-   * 20 represents the factor.
-   * 190 represents the start value of wavelength in list.
-   * 400 represents the end value of wavelength in list.
-   * 10 represents the increment value in wavelength in the list.
-   * 12,345 represents the number of rows.
-5. In the body section, there are 12,345 segments, each beginning with the bytes b'HH' and containing 94 bytes.
+2. The header section contains 512 bytes, there are 5 conponemts at locations 128, 256, 258, 260, 384.
+   * first one represents the factor.
+   * second one represents the start value of wavelength in list.
+   * third one represents the end value of wavelength in list.
+   * forth represents the increment value in wavelength in the list.
+   * fifth represents the number of rows.
+3. The body section contains number of row data mentioned at the fifth value in header. Each row starts with "HH".
+4. Each row in body section starts with the 2 bytes b'HH' plus 4 bytes time plus 4 bytes absorbances * number of wavelength. The number of wavelength can be determined by second to fouth value in header.
 
 The detailed information for the raw data listed in the table below:
+| location | Length(bytes) | Endianess | Format   | Name                              |
+| -------- | ------------- | --------- | -------- | --------------------------------- |
+| 0        | 512           |           |          | header                            |
+| 128      | 2             | big       | h(int)   | &nbsp;&nbsp;&nbsp;&nbsp;factor               |
+| 256      | 2             | big       | h(int)   | &nbsp;&nbsp;&nbsp;&nbsp;wavelength_start     |
+| 258      | 2             | big       | h(int)   | &nbsp;&nbsp;&nbsp;&nbsp;wavelength_end       |
+| 260      | 2             | big       | h(int)   | &nbsp;&nbsp;&nbsp;&nbsp;wavelength_increment |
+| 384      | 2             | big       | h(int)   | &nbsp;&nbsp;&nbsp;&nbsp;number of rows       |
+| 512      |               |           |          | body                              |
+| 512      | 2             | big       | cc       | &nbsp;&nbsp;&nbsp;&nbsp;row_mark             |
+| 514      | 4             | little    | f(float) | &nbsp;&nbsp;&nbsp;&nbsp;time                 |
+| 518      | 4             | big       | xi(int)  | &nbsp;&nbsp;&nbsp;&nbsp;absorbances          |
+Note: x will be determined by the equal= (wavelength_end - wavelength_start)/wavelength_increment + 1
+
 | Name                              | offset      | Byte order       | Format   | 
 | --------------------------------- | ----------- | ---------------- | -------- |
 | factor                            | 128         | (>)big-endian    | h(2)     |
