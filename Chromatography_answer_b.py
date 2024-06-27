@@ -3,7 +3,7 @@ import pandas as pd
 import struct
 import sys
 import platform
-
+    
 def parse_scale_binary_head(f, nbytes, metalocs):
     """
     Parses the header of the binary file to extract metadata.
@@ -51,7 +51,9 @@ def parse_scale_binary(binary_file_path):
             # Read 4 bytes for time (float)
             time_bytes = f.read(nbytes)
             time = struct.unpack('<f', time_bytes)[0]
-            time = round(time, 4)
+            
+            time = chromatography.precision_round(time, 4, '0.0001')
+            #time = round(time, 4)
             pre, decimals = str(time).split('.')
             while len(decimals)<4:
                 decimals += '0'
