@@ -48,7 +48,7 @@ def parse_scale_binary(binary_file_path):
         nbytes = 4
         lines = 0
         while lines < heads[4] and HH_bytes == b'HH':
-            # Read 4 bytes for time (float)
+            # Read 4 bytes for time (float) with little-endianess
             time_bytes = f.read(nbytes)
             time = struct.unpack('<f', time_bytes)[0]
             
@@ -63,6 +63,7 @@ def parse_scale_binary(binary_file_path):
             # Read subsequent bytes for absorbance values
             absorbances = []
             for _ in range(len(wavelengths)):
+                # Read 4 bytes for absorbance (int) with big-endianess
                 absorbance_bytes = f.read(nbytes)
                 absorbance = struct.unpack('>i', absorbance_bytes)[0]//heads[0]
                 absorbances.append(absorbance)
