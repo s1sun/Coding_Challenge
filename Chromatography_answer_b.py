@@ -52,7 +52,7 @@ def parse_scale_binary(binary_file_path):
             time_bytes = f.read(nbytes)
             time = struct.unpack('<f', time_bytes)[0]
             
-            time = chromatography.precision_round(time, 4, '0.0001')
+            time = int(10000*time + 0.5)/10000
             #time = round(time, 4)
             pre, decimals = str(time).split('.')
             while len(decimals)<4:
