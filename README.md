@@ -70,7 +70,7 @@ To convert the binary data into a CSV format similar to **"pear.csv"**, I wrote 
    5. **Save to CSV**: Write the extracted time and intensity values to a CSV file.
    6. **Compare the CSV to original "pear.csv"**: Verify the generated **"pear_out.csv"** with the original **"pear.csv"** and display the comparison results with no differences.
 
-For the complete Python Script, please refer to **"Chromatography_answer_a.py"** and **"chromatography.py"** files.
+For the complete Python Script, please refer to **"Chromatography_answer_a.py"** file.
 
 #### (b) scale challenge (intermediate): time vs. wavelength vs. absorbance data
 **Solution for Requirement (b)**
@@ -117,26 +117,26 @@ To convert the binary data into a CSV format similar to **"scale.csv"**, I wrote
    4. **Save to CSV**: Write the extracted time, wavelength, and absorbances data to a CSV file.
    5. **Compare the CSV to "scale.csv"**: Verify the generated **"scale_out.csv"** with the original **"scale.csv"** and display the comparison results with no differences.
       
-For the complete Python Script, please refer to **"Chromatography_answer_b.py"** and **"chromatography.py"** files.
+For the complete Python Script, please refer to **"Chromatography_answer_b.py"** file.
 
 #### (c) sixtysix (hard): time vs. mass vs. intensity data
 **Solution for Requirement (c)**
 
 **(i) Examine the raw data**
 
-The binary file **"sixtysix.A"** contains 54,320 bytes, which is ten times the number of lines in the CSV file "sixtysix.csv". It is divided into 5,432 segments, each 10 bytes long, containing 3 values. 
+The binary file **"sixtysix.A"** contains 54,320 bytes, which is ten times the number of lines in the "sixtysix.csv" file. It is divided into 5,432 segments, each 10 bytes long, containing 3 values. 
 1. The first value: 4 bytes representing the data location in **"sixtysix.B"**.
-2. The second value: 4 bytes representing the 'time' and can be calculated by dividing it by 60,000 and rounding the result.
+2. The second value: 4 bytes representing the time (calculated by dividing by 60,000 and rounding the result).
 3. The Third value: 2 bytes representing the number of non-zero values in the current row defined by the second 'time' value.
 
-The binary file **"sixtysix.B"** contains multiple mass and intensity segments with each 6 bytes. Referencing "sixtysix.csv," each segment in "sixtysix.B" consists of a pair of values: 
-1. The first value: 2 bytes, representing mass
-2. The second value: 4 bytes, representing intensity.
+The binary file **"sixtysix.B"** contains multiple mass and intensity segments, each 6 bytes. Each segment consists of: 
+1. The first value: 2 bytes representing mass
+2. The second value: 4 bytes representing intensity.
 
-I used the command **"format-hex sixtysix.C"** in Windows PowerShell and found the following: 
-- The file starts with "1F 8B", which is the magic number for gzip compressed files. This indicates that the data is compressed using gzip
+The **"fsixtysix.C"** contains the following: 
+- The file starts with "1F 8B", indicating gzip compresseion.
 
-Before dealing with binary files **"sixtysix.A"** and **"sixtysix.B"**, the file **"sixtysix.C"** can first be analyzed by decompressing it using the following python script:
+Before dealing with two binary files **"sixtysix.A"** and **"sixtysix.B"**, the file **"sixtysix.C"** can be analyzed by decompressing it using the following python script:
 ```
 import gzip
 
@@ -152,9 +152,8 @@ if binary_data_C[:2] == b'\x1F\x8B':
    # Decompress the gzip data
    decompressed_data = gzip.decompress(binary_data_C)
    print(decompressed_data)
-   return True
 else:
-   return False
+   print('binary_file_C is not a gzip file')
 ```
 The python script outputs the result **"There Is Nothing Useful In This File"** repeating.
 
@@ -165,7 +164,7 @@ The detailed information for the "sixtysix.A" binary data is listed in the table
 | 4        | 4             | big       | I(int)   | time                           |
 | 8        | 2             | big       | H(int)   | number of mass at current time |
 
-Each row occupy 10 bytes with 3 values mentioned at above table, The "sixtysix.A" consists of multiple rows.
+Each row occupies 10 bytes with 3 values mentioned above, The "sixtysix.A" file consists of multiple rows.
 
 The detailed information for the "sixtysix.B" binary data listed in the table below:
 | location | Length(bytes) | Endianess | Format   | Name      |
@@ -173,22 +172,24 @@ The detailed information for the "sixtysix.B" binary data listed in the table be
 | 0        | 2             | little    | H(int)   | mass      |
 | 4        | 4             | little    | I(int)   | intensity |
 
-Each row occupy 10 bytes with 2 values mentione at above table, The "sixtysix.B" consists of multiple rows.
+Each row occupy 6 bytes with 2 values mentione above, The "sixtysix.B" consists of multiple rows.
 
 **(ii) Determine how the data are stored in binary form**
 
-Reviewing the corresponding "sixtysix_original.csv," it contains 5,432 lines. The number of lines in csv file matches the number of segments in the binary A file. The "Time (min)" information is derived from the second value of each segment in A file, and the corresponding pair values (mass and intensity) location mentioned at first value can be drived from B. The number of mass intensity at the same time mentioned at third value of each segment can be extracted from the B file at start location determined at first value of the segment in A file.
+Reviewing the corresponding original "sixtysix.csv," it contains 5,432 lines. The number of lines in the csv file matches the number of segments in the binary A file. The "Time (min)" information is derived from the second value of each segment in A file, and the corresponding pair values (mass and intensity) location mentioned in first value can be drived from B. The number of mass intensity at the same time mentioned in third value of each segment can be extracted from the B file at start location determined by the first value of the segment in the A file.
 
 **(iii) write a Python program that converts the binary data into csv form (to parallel the provided csv)**
 
 To convert the binary data into a CSV format similar to **"sixtysix_original.csv"**, I wrote a Python script. The script reads the binary file, processes the A and B files, and extracts the time, mass, and intensity values:
    1. **Read the Binary Files**: Open the sixtysix.A and sixtysix.B binary files in read mode.
-   2. **Parse the sixtysix.A**: Read 10 bytes per segment with total 5432 segments from sixtysix.A binary file, extracting **bytes_proceding, time, and number_of_mass**.
-   3. **Parse the sixtysix.B**: Read 6 bytes per segment with total 58706 pairs from sixtysix.B binary file, extracting **mass, intensity**.
-   4. **Assemble dataframe from parsed sixtysix.A and sixtysix.B**: create a zero values dataframe with 5432(equal to number segments in A) rows and 48(equal to number of mass in B) columns, and index by time, and populate with mass and intensity values extracted from "sixtysix.B".
+   2. **Parse the sixtysix.A**: Read 10 bytes per segment, totaling 5432 segments from sixtysix.A binary file, extracting **location in B file, time, and number of pair (mass, intensity)**.
+   3. **Parse the sixtysix.B**: Read 6 bytes per segment, totaling 50575 pairs from sixtysix.B binary file, extracting **mass, intensity**.
+   4. **Assemble dataframe from parsed sixtysix.A and sixtysix.B**: Create a zero values dataframe with 5432(equal to number segments in A) rows and 49(equal to number of mass in B) columns, indexed by time, and populate with mass and intensity values extracted from "sixtysix.B".
    5. **Save to CSV**: Write the extracted time vs. mass vs. intensity data to a CSV file.
-   6. **Compare the CSV to "sixtysix_original.csv"**: Verify the generated **"sixtysix.csv"** with the **"sixtysit_original.csv"** and display the comparison results with no differences.
-      
-For the complete Python Script, please refer to **"Chromatography_answer_c.py"** and **"chromatography.py"** files.
+   6. **Compare the CSV to "sixtysix.csv"**: Verify the generated **"sixtysix_out.csv"** with the original **"sixtysit.csv"** and display the comparison results with no differences.(Note: there may be slight differences in the rounding of float values to specific decimal places across different platforms in python)
 
-All test results are stored at problem folders as binary data files are.
+Note: Due to python round function precision limitation. The float value for time from different platforms exists a tiny diffence. It will be allowed.
+      
+For the complete Python Script, please refer to **"Chromatography_answer_c.py"** file.
+
+All test results for encoding binary files are stored in their respective problem folders, alongside the binary data files.
