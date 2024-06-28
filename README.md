@@ -44,7 +44,7 @@ This document outlines the steps to parse three folders containing artificially 
 To begin, I used the `format-hex pear | more` command in Windows PowerShell to inspect the binary data. The findings are as follows: 
 1. The binary data is divided into three sections: header, body and footer.
 2. The header consists of 320 bytes with the repeating pattern "H   " 4 bytes.
-3. The body contains 80,000 bytes, consisting of pairs (time, intensity), with each pair occupying 2 X 4 bytes.
+3. The body contains 73,128 bytes, consisting of pairs (time, intensity), with each pair occupying 2 X 4 bytes.
 4. The footer consists of 480 bytes with the repeating pattern "H   " 4 bytes.
 
 The detailed information for the raw data listed in the table below:
@@ -65,7 +65,7 @@ Up reviewing the "pear.csv" file, I observed that each line contains a pair of v
 To convert the binary data into a CSV format similar to **"pear.csv"**, I wrote the following Python script:
    1. **Read the Binary File**: Open the binary file in read mode.
    2. **Parse the Header**: Skip the first 320 bytes (header).
-   3. **Extract Time and Intensity Values**: Read the next 80,000 bytes (body) as pairs of 2 X 4-byte values, interpreting them as little-endian integers.
+   3. **Extract Time and Intensity Values**: Read the next 73,128 bytes (body) as pairs of 2 X 4-byte values, interpreting them as little-endian integers.
    4. **Parse the Footer**: Skip the last 480 bytes (footer).
    5. **Save to CSV**: Write the extracted time and intensity values to a CSV file.
    6. **Compare the CSV to original "pear.csv"**: Verify the generated **"pear_out.csv"** with the original **"pear.csv"** and display the comparison results with no differences.
