@@ -51,7 +51,7 @@ The detailed information for the raw data listed in the table below:
 | Location | Length(bytes) | Endianess | Format   | Value                |
 | -------- | ------------- | --------- | -------- | ---------------------|
 | 0        | 320           |           |          | header               |                       
-| 320      | 80,000        | little    | I(int)   | body                 |
+| 320      | 73,128        | little    | I(int)   | body                 |
 | 320      | 4             | little    | I(int)   | &nbsp;&nbsp;&nbsp;&nbsp;time      |
 | 324      | 4             | little    | I(int)   | &nbsp;&nbsp;&nbsp;&nbsp;intensity |
 | 80,320   | 480           |           |          | footer               |
