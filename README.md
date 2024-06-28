@@ -133,7 +133,7 @@ The binary file **"sixtysix.B"** contains multiple mass and intensity segments, 
 1. The first value: 2 bytes representing mass
 2. The second value: 4 bytes representing intensity.
 
-The **"fsixtysix.C"** contains the following: 
+The **"sixtysix.C"** contains the following: 
 - The file starts with "1F 8B", indicating gzip compresseion.
 
 Before dealing with two binary files **"sixtysix.A"** and **"sixtysix.B"**, the file **"sixtysix.C"** can be analyzed by decompressing it using the following python script:
