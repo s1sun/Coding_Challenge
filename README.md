@@ -192,4 +192,4 @@ Note: Due to python round function precision limitation. The float value for tim
       
 For the complete Python Script, please refer to **"Chromatography_answer_c.py"** file.
 
-All test results for encoding binary files are stored in their respective problem folders, alongside the binary data files.
+All test results (decoded.csv files) are stored in their respective problem folders, alongside the binary data files.
