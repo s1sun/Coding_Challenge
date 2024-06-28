@@ -26,7 +26,7 @@ For detailed information about how to screen **temperatures, solvents, ligands, 
 
 **Solution for Requirement (b)**
 
-To accommodate additional information based on customer-specific requirements, I introduced the concept of tags. Tags will be a list containing customer-required additional information, such as Ai_mw, Bi_mw, etc.
+To accommodate additional information based on customer-specific requirements, the concept of tags are introduced. Tags will be a list containing customer-required additional information, such as Ai_mw, Bi_mw, etc.
 
 For detailed information on adding **tags** into class **Substance**, please refer to the "PyPlate_answer_b.ipynb" file.
 
