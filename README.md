@@ -187,8 +187,6 @@ To convert the binary data into a CSV format similar to **"sixtysix_original.csv
    4. **Assemble dataframe from parsed sixtysix.A and sixtysix.B**: Create a zero values dataframe with 5432(equal to number segments in A) rows and 49(equal to number of mass in B) columns, indexed by time, and populate with mass and intensity values extracted from "sixtysix.B".
    5. **Save to CSV**: Write the extracted time vs. mass vs. intensity data to a CSV file.
    6. **Compare the CSV to "sixtysix.csv"**: Verify the generated **"sixtysix_out.csv"** with the original **"sixtysit.csv"** and display the comparison results with no differences.(Note: there may be slight differences in the rounding of float values to specific decimal places across different platforms in python)
-
-Note: Due to python round function precision limitation. The float value for time from different platforms exists a tiny diffence. It will be allowed.
       
 For the complete Python Script, please refer to **"Chromatography_answer_c.py"** file.
 
