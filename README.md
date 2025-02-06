@@ -1,7 +1,6 @@
-## Merck_Coding_Challenge
+## Coding_Challenge
 - Author: Shaojun Sun
-- Resume: "resume_software.doc"
-- Below are my solution for the Merck_Coding_Challenge
+- Below are my solution for the Coding_Challenge
 ### 1. Designing High-Throughput Chemistry and Biology Experiments
 PyPlate is a Python package for designing high-throughput chemistry and biology experiments. Suppose that you need to screen conditions for 12 cross-coupling reactions of the form:
 
