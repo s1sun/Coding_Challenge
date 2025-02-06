@@ -29,7 +29,7 @@ To accommodate additional information based on customer-specific requirements, t
 
 For detailed information on adding **tags** into class **Substance**, please refer to the "PyPlate_answer_b.ipynb" file.
 
-### 2. Parsing Chromatography Instrument Data
+### 2. Parsing Chromatography Instrument Binary Data
 This document outlines the steps to parse three folders containing artificially generated and encoded chromatography data. Each folder represents a different challenge:
 - The "Pear Challenge": time vs. intensity data.
 - The "Scale Challenge": time vs. wavelength vs. absorbance data.
